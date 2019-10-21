@@ -16,4 +16,6 @@ spring:
       - id: register_route
         uri: lb://users-service
         predicates:
-        - Path=/users-service/**
+          - Path=/users-service/**
+        filters:
+          - StripPrefix=1
