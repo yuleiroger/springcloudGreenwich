@@ -7,4 +7,4 @@
 http://192.168.100.129:8500/v1/agent/service/deregister/systemConfig-8083
 put方法
 
-https://windmt.com/2018/05/09/spring-cloud-15-spring-cloud-gateway-ratelimiter/
+https://windmt.com/2018/05/09/spring-cloud-15-spring-cloud-gateway-ratelimiter
