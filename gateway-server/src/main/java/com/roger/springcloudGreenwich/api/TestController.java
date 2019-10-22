@@ -21,21 +21,7 @@ public class TestController {
 
 
     public TestController() {
-        config = ConfigService.getAppConfig();
-        config.addChangeListener(new ConfigChangeListener() {
-            @Override
-            public void onChange(ConfigChangeEvent changeEvent) {
-                log.info("Changes for namespace {}", changeEvent.getNamespace());
-                for (String key : changeEvent.changedKeys()) {
-                    ConfigChange change = changeEvent.getChange(key);
-                    log.info("Change - key: {}, oldValue: {}, newValue: {}, changeType: {}", change.getPropertyName(), change.getOldValue(), change.getNewValue(), change.getChangeType());
 
-                    if (key.equals("test")) {
-                        test = change.getNewValue();
-                    }
-                }
-            }
-        });
     }
 
     @GetMapping(value = "/index")
@@ -44,7 +30,6 @@ public class TestController {
         String someKey = "test";
         String someDefaultValue = "test";
         String value = config.getProperty(someKey, someDefaultValue);
-        log.info("change value:{}", test);
         return value;
     }
 }
