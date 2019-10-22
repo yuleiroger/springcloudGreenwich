@@ -8,3 +8,10 @@ http://192.168.100.129:8500/v1/agent/service/deregister/systemConfig-8083
 put方法
 
 https://windmt.com/2018/05/09/spring-cloud-15-spring-cloud-gateway-ratelimiter
+
+        filters:
+        - name: RequestRateLimiter
+          args:
+            key-resolver: "#{@ipKeyResolver}"
+            redis-rate-limiter.replenishRate: 1
+            redis-rate-limiter.burstCapacity: 1   #令牌桶容量

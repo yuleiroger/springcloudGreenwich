@@ -12,6 +12,7 @@
         <module>gateway-server</module>
         <module>services</module>
         <module>redis-service</module>
+        <module>common-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

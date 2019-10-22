@@ -51,8 +51,9 @@ public class RedisUtil {
         return list;
     }
 
-    public void setSet(String key, Set<?> value){
+    public void setSet(String key, Object value, long expireTime){
         redisTemplate.opsForSet().add(key, value);
+        redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
 
     public Set<?> getSet(String key){

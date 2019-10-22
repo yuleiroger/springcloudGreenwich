@@ -17,4 +17,10 @@ public class UsersController {
         log.info("login");
         return "login success";
     }
+
+    @GetMapping(value = "/getUser")
+    public String getUser(){
+        log.info("get");
+        return "get success";
+    }
 }

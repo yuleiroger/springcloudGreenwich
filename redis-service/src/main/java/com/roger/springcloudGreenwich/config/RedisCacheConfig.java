@@ -37,7 +37,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     private void setSerializer(RedisTemplate redisTemplate){
         @SuppressWarnings({ "rawtypes", "unchecked" })
         // 设置序列化
-                Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
+         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
                 Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
