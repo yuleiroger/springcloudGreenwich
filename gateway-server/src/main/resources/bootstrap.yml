@@ -11,9 +11,18 @@ spring:
     gateway:
       routes:
         # 集成注册中心的配置示例
-      - id: register_route
+      - id: users_route
         uri: lb://users-service
         predicates:
         - Path=/users-service/**
-
+      - id: products_route
+        uri: lb://products-service
+        predicates:
+        - Path=/products-service/**
+        filters:
+        - name: RequestRateLimiter
+          args:
+            key-resolver: "#{@ipKeyResolver}"
+            redis-rate-limiter.replenishRate: 1
+            redis-rate-limiter.burstCapacity: 1   #令牌桶容量
 

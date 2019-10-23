@@ -1,0 +1,9 @@
+package com.roger.springcloudGreenwich.constant;
+
+/**
+ * Created by admin on 2019/10/23.
+ */
+public class Constants {
+    public static final String TestKey = "testKey";
+    public static final String TestValue = "testValue";
+}

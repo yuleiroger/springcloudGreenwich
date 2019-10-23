@@ -7,34 +7,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by admin on 2019/10/21.
+ * Created by admin on 2019/10/23.
  */
 @RestController
+@RequestMapping("/products-service")
 @Slf4j
-@RequestMapping("/users-service")
-public class UsersController {
+public class ProductsController {
     @Autowired
     private HttpSession session;
 
-    @GetMapping(value = "/login")
-    public String login(){
-        log.info("login");
-        session.setAttribute(Constants.TestKey, Constants.TestValue);
-        return session.getId();
-    }
-
-    @GetMapping(value = "/getUser")
-    public Object getUser(HttpSession session){
-        log.info("get");
-        session.setAttribute("testKey", "testValue");
+    @GetMapping(value = "/getSession")
+    public Object getSession(){
         Map<String, Object> map = new HashMap<>();
-        map.put("test", session.getAttribute("testKey"));
+        map.put("sessionId", session.getId());
+        map.put("testKey", session.getAttribute(Constants.TestKey));
+        log.info("session id is{}",session.getId());
         return map;
     }
 }

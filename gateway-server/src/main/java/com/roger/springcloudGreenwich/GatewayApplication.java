@@ -21,14 +21,12 @@ import reactor.core.publisher.Mono;
 @RibbonClient(name = "myLoadBalance", configuration = MyRuleConfig.class)
 public class GatewayApplication {
 
-
-
     public static void main(String[] args){
         SpringApplication.run(GatewayApplication.class,args);
     }
 
-//    @Bean
-//    public KeyResolver ipKeyResolver() {
-//        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
-//    }
+    @Bean
+    public KeyResolver ipKeyResolver() {
+        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
+    }
 }

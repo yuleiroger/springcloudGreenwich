@@ -7,14 +7,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 /**
- * Created by admin on 2019/10/21.
+ * Created by admin on 2019/10/23.
  */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableApolloConfig
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60*30)
-public class UsersApplication {
+@EnableRedisHttpSession
+public class ProductsApplication {
     public static void main(String[] args) {
-        SpringApplication.run(UsersApplication.class, args);
+        SpringApplication.run(ProductsApplication.class, args);
     }
 }
