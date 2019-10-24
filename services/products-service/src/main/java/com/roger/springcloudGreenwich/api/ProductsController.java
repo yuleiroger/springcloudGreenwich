@@ -23,10 +23,11 @@ public class ProductsController {
 
     @GetMapping(value = "/getSession")
     public Object getSession(){
+        //ExpiringSession expiringSession = null;
         Map<String, Object> map = new HashMap<>();
         map.put("sessionId", session.getId());
         map.put("testKey", session.getAttribute(Constants.TestKey));
-        log.info("session id is{}",session.getId());
+        log.info("session id is:{}",session.getId());
         return map;
     }
 }

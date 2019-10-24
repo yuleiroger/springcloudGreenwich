@@ -23,6 +23,6 @@ spring:
         - name: RequestRateLimiter
           args:
             key-resolver: "#{@ipKeyResolver}"
-            redis-rate-limiter.replenishRate: 1
-            redis-rate-limiter.burstCapacity: 1   #令牌桶容量
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20  #令牌桶容量
 
