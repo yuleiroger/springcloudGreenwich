@@ -27,6 +27,11 @@ public class StringUtil {
         return json;
     }
 
+    /**
+     *
+     * @param length
+     * @return
+     */
     public static String getRandomString(int length){
         String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random random=new Random();
@@ -45,4 +50,5 @@ public class StringUtil {
     public static void main(String[] args) {
         System.out.println(getRandomString(5));
     }
+
 }
