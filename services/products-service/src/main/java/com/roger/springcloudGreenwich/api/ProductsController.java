@@ -1,11 +1,11 @@
 package com.roger.springcloudGreenwich.api;
 
-import com.roger.springcloudGreenwich.constant.Constants;
+import com.roger.springcloudGreenwich.entities.MongoProducts;
+import com.roger.springcloudGreenwich.service.MongoProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,15 +17,21 @@ import java.util.Map;
 @Slf4j
 public class ProductsController {
     @Autowired
-    private HttpSession session;
+    private MongoProductService mongoProductService;
 
     @PostMapping(value = "/getSession")
     public Object getSession(@RequestHeader("userJson") String userJson){
         log.info("user is:{}", userJson);
         Map<String, Object> map = new HashMap<>();
-        map.put("sessionId", session.getId());
-        map.put("testKey", session.getAttribute(Constants.TestKey));
-        log.info("session id is:{}",session.getId());
         return map;
+    }
+
+    @GetMapping(value = "/saveProducts")
+    public String products(){
+        MongoProducts products = new MongoProducts();
+        products.setProductNo("003");
+        products.setProductName("数据库入门与实践");
+        mongoProductService.saveMongoProduct(products);
+        return "products success";
     }
 }
