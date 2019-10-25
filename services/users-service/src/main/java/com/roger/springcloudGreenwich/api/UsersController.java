@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,13 +29,17 @@ public class UsersController {
     private RedisUtil redisUtil;
 
     @GetMapping(value = "/login")
-    public String login() throws Exception{
+    public String login(HttpServletResponse response) throws Exception{
         log.info("login");
         User user = new User();
-        user.setUserNo(MD5Util.md5Encode("admin"));
+        String key = MD5Util.md5Encode("admin");
+        user.setUserNo("admin");
         user.setUserName(StringUtil.getRandomString(4));
         user.setPassword("123456");
-        redisUtil.setObject(user.getUserNo(), user.getClass(), null);
+        redisUtil.setObject(key, user, null);
+        String cookieName="Sender";
+        Cookie cookie = new Cookie(cookieName, "Test_Content");
+        response.addCookie(cookie);
         return "login success";
     }
 

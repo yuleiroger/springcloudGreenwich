@@ -42,13 +42,14 @@ public class RedisUtil {
 
     }
 
-    public void setObject(String key, Class obj, Long expireTime){
+    public void setObject(String key, Object obj, Long expireTime){
         if(expireTime == null){
             expireTime = 30L;
         }
         redisTemplate.opsForValue().set(key, obj);
         redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
+
 
     public void removeFromList(String key, Object value){
         redisTemplate.opsForList().remove(key, 1, value);

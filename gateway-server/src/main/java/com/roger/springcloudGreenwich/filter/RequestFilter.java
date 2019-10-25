@@ -1,7 +1,10 @@
 package com.roger.springcloudGreenwich.filter;
 
+import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.constant.Constants;
 import com.roger.springcloudGreenwich.util.RedisUtil;
+import com.roger.springcloudGreenwich.utils.MD5Util;
+import com.roger.springcloudGreenwich.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -40,7 +43,20 @@ public class RequestFilter implements GlobalFilter, Ordered {
         Flux<DataBuffer> body = request.getBody();
         log.info("headers:{},cookies:{},queryParams:{},body:{}", headers, cookies, queryParams, body);
 
-        serverWebExchange.getRequest().mutate().header("userJson", "888").build();
+        User user;
+        Object obj;
+        try{
+            obj = redisUtil.getRedisValue(MD5Util.md5Encode("admin"));
+            log.info("obj is:{}", obj);
+            if(obj != null){
+                user = (User)obj;
+                log.info("user is:{}",user.getUserNo());
+                serverWebExchange.getRequest().mutate().header("userJson", StringUtil.javabeanToJson(user)).build();
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         return gatewayFilterChain.filter(serverWebExchange);
     }
