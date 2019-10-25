@@ -14,6 +14,7 @@
     <modules>
         <module>users-service</module>
         <module>products-service</module>
+        <module>orders-service</module>
     </modules>
 
 

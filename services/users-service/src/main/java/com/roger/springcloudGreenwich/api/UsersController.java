@@ -1,6 +1,10 @@
 package com.roger.springcloudGreenwich.api;
 
+import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.constant.Constants;
+import com.roger.springcloudGreenwich.util.RedisUtil;
+import com.roger.springcloudGreenwich.utils.MD5Util;
+import com.roger.springcloudGreenwich.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +24,17 @@ import java.util.Map;
 @RequestMapping("/users-service")
 public class UsersController {
     @Autowired
-    private HttpSession session;
+    private RedisUtil redisUtil;
 
     @GetMapping(value = "/login")
-    public String login(){
+    public String login() throws Exception{
         log.info("login");
-        session.setAttribute(Constants.TestKey, Constants.TestValue);
-        return session.getId();
+        User user = new User();
+        user.setUserNo(MD5Util.md5Encode("admin"));
+        user.setUserName(StringUtil.getRandomString(4));
+        user.setPassword("123456");
+        redisUtil.setObject(user.getUserNo(), user.getClass(), null);
+        return "login success";
     }
 
     @GetMapping(value = "/getUser")

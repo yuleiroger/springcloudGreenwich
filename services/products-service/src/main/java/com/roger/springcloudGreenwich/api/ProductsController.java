@@ -3,9 +3,7 @@ package com.roger.springcloudGreenwich.api;
 import com.roger.springcloudGreenwich.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -21,9 +19,9 @@ public class ProductsController {
     @Autowired
     private HttpSession session;
 
-    @GetMapping(value = "/getSession")
-    public Object getSession(){
-        //ExpiringSession expiringSession = null;
+    @PostMapping(value = "/getSession")
+    public Object getSession(@RequestHeader("userJson") String userJson){
+        log.info("user is:{}", userJson);
         Map<String, Object> map = new HashMap<>();
         map.put("sessionId", session.getId());
         map.put("testKey", session.getAttribute(Constants.TestKey));

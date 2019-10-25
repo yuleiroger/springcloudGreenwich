@@ -39,6 +39,14 @@ public class RedisUtil {
         if(expireTime == null){
             expireTime = 30L;
         }
+
+    }
+
+    public void setObject(String key, Class obj, Long expireTime){
+        if(expireTime == null){
+            expireTime = 30L;
+        }
+        redisTemplate.opsForValue().set(key, obj);
         redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
 
@@ -46,7 +54,13 @@ public class RedisUtil {
         redisTemplate.opsForList().remove(key, 1, value);
     }
 
-    public List<?> getList(String key, long begin, long end){
+    public List<?> getList(String key, Long begin, Long end){
+        if(begin == null){
+           begin = 0L;
+        }
+        if(end == null){
+            end = -1L;
+        }
         List<?> list = redisTemplate.opsForList().range(key, begin, end);
         return list;
     }
