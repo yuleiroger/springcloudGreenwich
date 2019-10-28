@@ -14,6 +14,7 @@
         <module>redis-service</module>
         <module>common-service</module>
         <module>entitys</module>
+        <module>mongodb-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
