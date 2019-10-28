@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by admin on 2019/10/23.
@@ -28,10 +30,20 @@ public class ProductsController {
 
     @GetMapping(value = "/saveProducts")
     public String products(){
-        MongoProducts products = new MongoProducts();
-        products.setProductNo("004");
-        products.setProductName("数据库入门与实践");
-        mongoProductService.saveMongoProduct(products);
+
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(50);
+        for(int i = 5; i < 10000; i++){
+            MongoProducts products = new MongoProducts();
+            products.setProductNo(i + "");
+            products.setProductName("数据库入门与实践" + i);
+            fixedThreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mongoProductService.saveMongoProduct(products);
+                }
+            });
+        }
+
         return "products success";
     }
 }
