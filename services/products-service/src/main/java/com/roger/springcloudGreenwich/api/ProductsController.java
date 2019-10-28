@@ -29,7 +29,7 @@ public class ProductsController {
     @GetMapping(value = "/saveProducts")
     public String products(){
         MongoProducts products = new MongoProducts();
-        products.setProductNo("003");
+        products.setProductNo("004");
         products.setProductName("数据库入门与实践");
         mongoProductService.saveMongoProduct(products);
         return "products success";
