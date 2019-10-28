@@ -28,7 +28,7 @@ public class MongodbPropertiesFactoryImpl extends MongodbPropertiesFactory imple
         mongoProperties.setAddress(addressList);
         mongoProperties.setMinConnectionsPerHost(config.getIntProperty("mongo.cluster.minConnectionsPerHost",0));
         mongoProperties.setMaxConnectionsPerHost(config.getIntProperty("mongo.cluster.maxConnectionsPerHost", 0));
-
+        mongoProperties.setThreadsAllowedToBlockForConnectionMultiplier(config.getIntProperty("mongo.cluster.threadsAllowedToBlockForConnectionMultiplier", 0));
         return mongoProperties;
     }
 }

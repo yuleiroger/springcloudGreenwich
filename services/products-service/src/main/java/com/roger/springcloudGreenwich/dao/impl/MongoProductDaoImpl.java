@@ -3,7 +3,9 @@ package com.roger.springcloudGreenwich.dao.impl;
 import com.roger.springcloudGreenwich.dao.MongoProductDao;
 import com.roger.springcloudGreenwich.entities.MongoProducts;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,6 +27,14 @@ public class MongoProductDaoImpl implements MongoProductDao{
     @Override
     public void saveProduct(MongoProducts products) {
         mongoTemplate.insert(products);
+    }
+
+    @Override
+    public List<MongoProducts> queryAllMongoProducts() {
+        List<MongoProducts> list = mongoTemplate.findAll(MongoProducts.class);
+        //mongoTemplate.getCollection("tb_products").find(new Document("product_no", "123"));
+        log.info("{}",list.size());
+        return list;
     }
 
     /**
@@ -54,7 +64,7 @@ public class MongoProductDaoImpl implements MongoProductDao{
         Query query = new Query();
         String pattern_name = name;
         Pattern pattern=Pattern.compile("^.*" + pattern_name+".*$", Pattern.CASE_INSENSITIVE);
-        query.addCriteria(Criteria.where("product_name").regex(pattern));
+        query.addCriteria(Criteria.where("product_name").regex(pattern)).with(new Sort(Sort.Direction.DESC,"product_no"));
         List<MongoProducts> list = mongoTemplate.find(query, MongoProducts.class, "tb_products");
         log.info("{}",list.get(0));
         return list;

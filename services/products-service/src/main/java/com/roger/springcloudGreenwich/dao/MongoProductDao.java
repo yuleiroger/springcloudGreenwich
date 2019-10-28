@@ -13,6 +13,8 @@ public interface MongoProductDao {
 
     List<MongoProducts> queryMongoProducts();
 
+    List<MongoProducts> queryAllMongoProducts();
+
     List<MongoProducts> queryProductLike(String name);
 
     void remove();

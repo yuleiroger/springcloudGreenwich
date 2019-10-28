@@ -27,7 +27,6 @@ public class MongoDbFactoryImpl {
     public MongoDbFactory mongoDbFactory() {
         MongodbPropertiesFactory factory = new MongodbPropertiesFactoryImpl();
         MongoProperties properties = factory.generateMongoProperties("");
-        properties.setThreadsAllowedToBlockForConnectionMultiplier(5);
         properties.setServerSelectionTimeout(30000);
         properties.setMaxWaitTime(120000);
         properties.setMaxConnectionIdleTime(0);
