@@ -2,6 +2,7 @@ package com.roger.springcloudGreenwich.api;
 
 import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.constant.Constants;
+import com.roger.springcloudGreenwich.message.KafkaSender;
 import com.roger.springcloudGreenwich.util.RedisUtil;
 import com.roger.springcloudGreenwich.utils.MD5Util;
 import com.roger.springcloudGreenwich.utils.StringUtil;
@@ -27,6 +28,8 @@ import java.util.Map;
 public class UsersController {
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private KafkaSender kafkaSender;
 
     @GetMapping(value = "/login")
     public String login(HttpServletResponse response) throws Exception{
@@ -44,11 +47,9 @@ public class UsersController {
     }
 
     @GetMapping(value = "/getUser")
-    public Object getUser(HttpSession session){
+    public Object getUser(){
         log.info("get");
-        session.setAttribute("testKey", "testValue");
-        Map<String, Object> map = new HashMap<>();
-        map.put("test", session.getAttribute("testKey"));
-        return map;
+        kafkaSender.send("hello world");
+        return null;
     }
 }
