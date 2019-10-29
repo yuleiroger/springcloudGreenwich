@@ -48,8 +48,8 @@ public class UsersController {
 
     @GetMapping(value = "/getUser")
     public Object getUser(){
-        log.info("get");
+        log.info("send message to kafka");
         kafkaSender.send("hello world");
-        return null;
+        return "send success";
     }
 }
