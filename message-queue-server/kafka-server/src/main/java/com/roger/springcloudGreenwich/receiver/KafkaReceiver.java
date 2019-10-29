@@ -23,7 +23,7 @@ public class KafkaReceiver {
 
         if (kafkaMessage.isPresent()) {
             Object message = kafkaMessage.get();
-            log.info("接收到消息={}", message);
+            log.info("接收到消息：{}", message);
         }
     }
 }
