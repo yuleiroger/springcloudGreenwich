@@ -63,7 +63,7 @@ public class MongoProductDaoImpl implements MongoProductDao{
         //用来封装所有条件的对象,模糊查询
         Query query = new Query();
         String pattern_name = name;
-        Pattern pattern=Pattern.compile("^.*" + pattern_name+".*$", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^.*" + pattern_name+".*$", Pattern.CASE_INSENSITIVE);
         query.addCriteria(Criteria.where("product_name").regex(pattern)).with(new Sort(Sort.Direction.DESC,"product_no"));
         List<MongoProducts> list = mongoTemplate.find(query, MongoProducts.class, "tb_products");
         log.info("{}",list.get(0));
