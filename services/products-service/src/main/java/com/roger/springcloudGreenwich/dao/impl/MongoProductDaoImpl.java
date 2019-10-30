@@ -13,6 +13,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 /**
@@ -32,6 +34,7 @@ public class MongoProductDaoImpl implements MongoProductDao{
     @Override
     public List<MongoProducts> queryAllMongoProducts() {
         List<MongoProducts> list = mongoTemplate.findAll(MongoProducts.class);
+
         //mongoTemplate.getCollection("tb_products").find(new Document("product_no", "123"));
         log.info("{}",list.size());
         return list;
