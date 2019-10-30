@@ -3,6 +3,7 @@ package com.roger.springcloudGreenwich;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableApolloConfig
+@EnableCircuitBreaker
 public class UsersApplication {
     public static void main(String[] args) {
         SpringApplication.run(UsersApplication.class, args);

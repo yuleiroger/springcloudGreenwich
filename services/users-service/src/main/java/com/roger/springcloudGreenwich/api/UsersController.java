@@ -1,5 +1,7 @@
 package com.roger.springcloudGreenwich.api;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.constant.Constants;
 import com.roger.springcloudGreenwich.message.KafkaSender;
@@ -47,9 +49,35 @@ public class UsersController {
     }
 
     @GetMapping(value = "/getUser")
-    public Object getUser(){
+    public Object getUser(HttpServletRequest request){
         log.info("send message to kafka");
         kafkaSender.send("hello world");
         return "send success";
+    }
+
+
+    @HystrixCommand(fallbackMethod = "error", commandProperties = {
+            @HystrixProperty(name="execution.isolation.strategy", value = "THREAD"),
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000"),
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "40")
+    }, threadPoolProperties = {
+            @HystrixProperty(name = "coreSize", value = "1"),
+            @HystrixProperty(name = "maxQueueSize", value = "10"),
+            @HystrixProperty(name = "keepAliveTimeMinutes", value = "1000"),
+            @HystrixProperty(name = "queueSizeRejectionThreshold", value = "8"),
+            @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "12"),
+            @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "1440")
+    })
+    @GetMapping(value = "/helloHystrix")
+    public Object helloHystrix(HttpServletRequest request) throws Exception{
+        //int i = 1/0;
+        Thread.sleep(3000);
+        kafkaSender.send("hello world");
+        return "send success";
+    }
+
+    public Object error(HttpServletRequest request){
+        return "error";
     }
 }
