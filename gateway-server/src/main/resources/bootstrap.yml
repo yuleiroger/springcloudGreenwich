@@ -3,7 +3,7 @@ spring:
   cloud:
     consul:
       discovery:
-        service-name: gateway
+        service-name: gateway-server
         register: true
         health-check-path: ${management.context-path}/health
         health-check-interval: 5s

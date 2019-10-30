@@ -28,6 +28,12 @@ public class ProductsController {
         return map;
     }
 
+    @GetMapping(value = "/index")
+    public Object index(){
+        Map<String, Object> map = new HashMap<>();
+        return "index";
+    }
+
     @GetMapping(value = "/saveProducts")
     public String products(){
 
