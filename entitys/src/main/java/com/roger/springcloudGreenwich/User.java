@@ -11,7 +11,7 @@ import java.math.BigInteger;
 @Data
 public class User implements Serializable{
     private static final long serialVersionUID = -2859466854096196299L;
-    private BigInteger id;
+    private Long id;
     private String userNo;
     private String userName;
     private String password;

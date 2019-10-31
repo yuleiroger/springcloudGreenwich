@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface UserService {
     List<User> selectUsers(User user);
+
+    void addUser(User user);
 }

@@ -19,9 +19,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by admin on 2019/10/21.
@@ -59,6 +63,22 @@ public class UsersController {
         User user = new User();
         List<User> userList = userService.selectUsers(user);
         return userList;
+    }
+
+    @GetMapping(value = "/addUser")
+    public Object addUser(HttpServletRequest request) throws Exception{
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+        User user = new User();
+        Long id = redisUtil.generateId("id", 1);
+        log.info("id is:{}", id);
+        user.setId(id);
+        user.setUserName(StringUtil.getRandomString(5));
+        user.setPassword(MD5Util.md5Encode("123456"));
+
+        userService.addUser(user);
+
+        return "success";
     }
 
 

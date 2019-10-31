@@ -2,10 +2,13 @@ package com.roger.springcloudGreenwich.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Set;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -74,6 +77,39 @@ public class RedisUtil {
     public Set<?> getSet(String key){
         Set<?> set = redisTemplate.opsForSet().members(key);
         return set;
+    }
+
+    public long generateId(String key, int increment) {
+        Format f = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+
+        Date tomorrow = c.getTime();
+
+        RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+
+        counter.expireAt(tomorrow);
+        return counter.addAndGet(increment);
+    }
+
+
+    public Object incrementHash(RedisScript script, String hashKey, Long delta, final List<String> fields) throws Exception{
+        List<String> keyList = new ArrayList();
+        keyList.add("count");
+        keyList.add("rate.limiting:127.0.0.1");
+
+/**
+ * 用Mpa设置Lua的ARGV[1]
+ */
+        Map<String, Object> argvMap = new HashMap<String, Object>();
+        argvMap.put("expire", 10000);
+        argvMap.put("times", 10);
+        Object obj = redisTemplate.execute(script, keyList, argvMap);
+        System.out.println(obj);
+        return redisTemplate.execute(script, keyList, argvMap);
     }
 
     public static void main(String[] args) {

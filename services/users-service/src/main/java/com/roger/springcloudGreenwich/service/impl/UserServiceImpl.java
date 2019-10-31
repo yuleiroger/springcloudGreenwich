@@ -23,4 +23,10 @@ public class UserServiceImpl implements UserService{
         log.info("query user");
         return userMapper.selectUsers(user);
     }
+
+    @Override
+    public void addUser(User user) {
+        log.info("query user");
+        userMapper.addUser(user);
+    }
 }

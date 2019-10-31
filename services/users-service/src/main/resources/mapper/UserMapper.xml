@@ -12,6 +12,11 @@
         ORDER BY u.last_operate_time desc
     </select>
 
+    <insert id="addUser" parameterType="com.roger.springcloudGreenwich.User">
+        insert into tb_users(id,user_name,password,last_operate_time)
+        VALUES (#{id},#{userName},#{password},now())
+    </insert>
+
 
 
 
