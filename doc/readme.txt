@@ -25,4 +25,6 @@ step5验证rs.status()
 4.kafka
 ./kafka-server-start.sh /opt/kafka/config/server.properties &
 
+https://www.cnblogs.com/chanshuyi/p/mysql_user_mng.html
+
 https://windmt.com/2018/05/09/spring-cloud-15-spring-cloud-gateway-ratelimiter
