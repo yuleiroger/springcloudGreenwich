@@ -28,3 +28,5 @@ step5验证rs.status()
 https://www.cnblogs.com/chanshuyi/p/mysql_user_mng.html
 
 https://windmt.com/2018/05/09/spring-cloud-15-spring-cloud-gateway-ratelimiter
+
+https://www.cnblogs.com/jinshuaishuai/p/10831172.html
