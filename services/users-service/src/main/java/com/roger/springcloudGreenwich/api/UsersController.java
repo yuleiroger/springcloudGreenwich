@@ -5,6 +5,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.constant.Constants;
 import com.roger.springcloudGreenwich.message.KafkaSender;
+import com.roger.springcloudGreenwich.service.UserService;
 import com.roger.springcloudGreenwich.util.RedisUtil;
 import com.roger.springcloudGreenwich.utils.MD5Util;
 import com.roger.springcloudGreenwich.utils.StringUtil;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +34,8 @@ public class UsersController {
     private RedisUtil redisUtil;
     @Autowired
     private KafkaSender kafkaSender;
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/login")
     public String login(HttpServletResponse response) throws Exception{
@@ -52,7 +56,9 @@ public class UsersController {
     public Object getUser(HttpServletRequest request){
         log.info("send message to kafka");
         kafkaSender.send("hello world");
-        return "send success";
+        User user = new User();
+        List<User> userList = userService.selectUsers(user);
+        return userList;
     }
 
 
