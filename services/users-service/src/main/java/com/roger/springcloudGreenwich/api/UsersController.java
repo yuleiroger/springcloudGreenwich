@@ -42,7 +42,6 @@ public class UsersController {
     @PostMapping(value = "/login")
     public String login(HttpServletResponse response,@RequestBody String params) throws Exception{
         log.info("login params is:{}", params);
-        log.info("login");
         User user = new User();
         String key = MD5Util.md5Encode("admin");
 
@@ -76,7 +75,7 @@ public class UsersController {
         Long id = redisUtil.generateId("id", 1);
         log.info("id is:{}", id);
         user.setId(id);
-        user.setUserName(StringUtil.getRandomString(5));
+        user.setUserNo(StringUtil.getRandomString(5));
         user.setPassword(MD5Util.md5Encode("123456"));
 
         userService.addUser(user);

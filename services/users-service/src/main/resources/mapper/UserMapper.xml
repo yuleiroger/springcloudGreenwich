@@ -7,14 +7,20 @@
         select u.id as id, u.user_name as userName,u.password as password from tb_users u
         where 1=1
         <if test="id!=null">
-            and c.id=#{id}
+            and u.id=#{id}
+        </if>
+        <if test="userNo!=null and userNo != ''">
+            and u.user_no=#{userNo}
+        </if>
+        <if test="password!=null and password != ''">
+            and u.password=#{password}
         </if>
         ORDER BY u.last_operate_time desc
     </select>
 
     <insert id="addUser" parameterType="com.roger.springcloudGreenwich.User">
-        insert into tb_users(id,user_name,password,last_operate_time)
-        VALUES (#{id},#{userName},#{password},now())
+        insert into tb_users(id,user_no,password,last_operate_time)
+        VALUES (#{id},#{userNo},#{password},now())
     </insert>
 
 
