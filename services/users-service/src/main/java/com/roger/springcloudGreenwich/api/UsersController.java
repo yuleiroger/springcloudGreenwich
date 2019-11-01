@@ -11,9 +11,7 @@ import com.roger.springcloudGreenwich.utils.MD5Util;
 import com.roger.springcloudGreenwich.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -41,11 +39,13 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/login")
-    public String login(HttpServletResponse response) throws Exception{
+    @PostMapping(value = "/login")
+    public String login(HttpServletResponse response,@RequestBody String params) throws Exception{
+        log.info("login params is:{}", params);
         log.info("login");
         User user = new User();
         String key = MD5Util.md5Encode("admin");
+
         user.setUserNo("admin");
         user.setUserName(StringUtil.getRandomString(4));
         user.setPassword("123456");
@@ -53,7 +53,10 @@ public class UsersController {
         String cookieName="Sender";
         Cookie cookie = new Cookie(cookieName, "Test_Content");
         response.addCookie(cookie);
-        return "login success";
+        Map<String, String> map = new HashMap<>();
+        map.put("result","success");
+        log.info("return result is{}",StringUtil.javabeanToJson(map));
+        return StringUtil.javabeanToJson(map);
     }
 
     @GetMapping(value = "/getUser")

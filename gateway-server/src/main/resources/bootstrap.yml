@@ -19,10 +19,5 @@ spring:
         uri: lb://products-service
         predicates:
         - Path=/products-service/**
-        filters:
-        - name: RequestRateLimiter
-          args:
-            key-resolver: "#{@ipKeyResolver}"
-            redis-rate-limiter.replenishRate: 100
-            redis-rate-limiter.burstCapacity: 20  #令牌桶容量
+
 

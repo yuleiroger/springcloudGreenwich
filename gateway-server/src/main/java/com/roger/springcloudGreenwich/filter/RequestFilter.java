@@ -42,15 +42,20 @@ public class RequestFilter implements GlobalFilter, Ordered {
         MultiValueMap<String, String> queryParams = request.getQueryParams();
         Flux<DataBuffer> body = request.getBody();
         log.info("headers:{},cookies:{},queryParams:{},body:{}", headers, cookies, queryParams, body);
-
+        String ip = getIpAddress(request);
+        log.info("access ip is:{}", ip);
         User user;
         Object obj;
+        Object id;
         try{
             obj = redisUtil.getRedisValue(MD5Util.md5Encode("admin"));
+            id = redisUtil.getRedisValue("id");
             log.info("obj is:{}", obj);
+            log.info("id is:{}", id);
             if(obj != null){
                 user = (User)obj;
-                log.info("user is:{}",user.getUserNo());
+                log.info("user is:{}", user.getUserNo());
+
                 serverWebExchange.getRequest().mutate().header("userJson", StringUtil.javabeanToJson(user)).build();
 
             }
@@ -66,7 +71,7 @@ public class RequestFilter implements GlobalFilter, Ordered {
         return -100;
     }
 
-    public static String getIpAddress(ServerHttpRequest request) {
+    private String getIpAddress(ServerHttpRequest request) {
         HttpHeaders headers = request.getHeaders();
         String ip = headers.getFirst("x-forwarded-for");
         if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
