@@ -79,6 +79,13 @@ public class RedisUtil {
         return set;
     }
 
+    public Long generateId(String key) {
+        RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+        Long increment = entityIdCounter.getAndIncrement();
+        entityIdCounter.expire(-1, TimeUnit.SECONDS);
+        return increment;
+    }
+
     public long generateId(String key, int increment) {
         Format f = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date();
