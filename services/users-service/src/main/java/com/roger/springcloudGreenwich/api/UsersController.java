@@ -40,22 +40,50 @@ public class UsersController {
     private UserService userService;
 
     @PostMapping(value = "/login")
-    public String login(HttpServletResponse response,@RequestBody String params) throws Exception{
+    public String login(HttpServletRequest request,
+                        @RequestBody String params) throws Exception{
         log.info("login params is:{}", params);
+        String userNo = request.getParameter("userNo");
+        String password = request.getParameter("password");
+        log.info("user no is:{}", userNo);
+        log.info("password is:{}", password);
         User user = new User();
-        String key = MD5Util.md5Encode("admin");
-
-        user.setUserNo("admin");
-        user.setUserName(StringUtil.getRandomString(4));
-        user.setPassword("123456");
-        redisUtil.setObject(key, user, null);
-        String cookieName="Sender";
-        Cookie cookie = new Cookie(cookieName, "Test_Content");
-        response.addCookie(cookie);
+        user.setUserNo(userNo);
+        user.setPassword(MD5Util.md5Encode(password));
+        List<User> list = userService.selectUsers(user);
         Map<String, String> map = new HashMap<>();
-        map.put("result","success");
-        log.info("return result is{}",StringUtil.javabeanToJson(map));
+        HttpSession session = request.getSession();
+        if(list == null || list.isEmpty()){
+            map.put("result","false");
+        }else{
+            map.put("result","success");
+
+            session.setAttribute("loginUser", list.get(0));
+        }
+        log.info("session id is:{}", session.getId());
         return StringUtil.javabeanToJson(map);
+    }
+
+    @GetMapping(value = "/getSession")
+    public Object getSession(HttpServletRequest request) throws Exception{
+        HttpSession session = request.getSession();
+
+        log.info("session id is:{}", session.getId());
+        if(session.getAttribute("loginUser") == null){
+            log.info("session is null");
+            return null;
+        }else{
+            log.info("session id is:{}" + session.getId());
+            User user = (User)session.getAttribute("loginUser");
+            return StringUtil.javabeanToJson(user);
+        }
+    }
+
+    @GetMapping(value = "/logout")
+    public String logout(HttpServletRequest request,
+                        @RequestBody String params) throws Exception{
+        log.info("login params is:{}", params);
+        return "logout success";
     }
 
     @GetMapping(value = "/getUser")
@@ -72,7 +100,7 @@ public class UsersController {
         ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
         User user = new User();
-        Long id = redisUtil.generateId("id", 1);
+        Long id = redisUtil.generateId("id");
         log.info("id is:{}", id);
         user.setId(id);
         user.setUserNo(StringUtil.getRandomString(5));
