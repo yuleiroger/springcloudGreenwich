@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,18 +39,14 @@ public class ProductsController {
     public String products(){
 
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(50);
-        for(int i = 5; i < 10000; i++){
+        LinkedList<MongoProducts> list = new LinkedList();
+        for(int i = 5; i < 1000; i++){
             MongoProducts products = new MongoProducts();
             products.setProductNo(i + "");
             products.setProductName("数据库入门与实践" + i);
-            fixedThreadPool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mongoProductService.saveMongoProduct(products);
-                }
-            });
+            list.add(products);
         }
-
+        mongoProductService.saveMongoProducts(list);
         return "products success";
     }
 }

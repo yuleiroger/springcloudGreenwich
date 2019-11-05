@@ -2,6 +2,7 @@ package com.roger.springcloudGreenwich.service;
 
 import com.roger.springcloudGreenwich.entities.MongoProducts;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -9,6 +10,8 @@ import java.util.List;
  */
 public interface MongoProductService {
     void saveMongoProduct(MongoProducts products);
+
+    void saveMongoProducts(LinkedList<MongoProducts> list);
 
     List<MongoProducts> queryMongoProducts();
 

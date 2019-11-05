@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +30,11 @@ public class MongoProductDaoImpl implements MongoProductDao{
     @Override
     public void saveProduct(MongoProducts products) {
         mongoTemplate.insert(products);
+    }
+
+    @Override
+    public void saveProducts(LinkedList<MongoProducts> list) {
+        mongoTemplate.insertAll(list);
     }
 
     @Override

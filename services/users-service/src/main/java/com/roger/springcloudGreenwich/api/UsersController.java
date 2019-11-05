@@ -116,6 +116,26 @@ public class UsersController {
         return "success";
     }
 
+    @GetMapping(value = "/addUserBatch",produces = "text/html;charset=UTF-8")
+    public Object addUserBatch() throws Exception{
+        long time = userService.batchTest();
+        BaseResult baseResult = new BaseResult();
+        baseResult.setResultMsg("success");
+        baseResult.setIsNeedLog(false);
+        baseResult.setTime(time);
+        return StringUtil.javabeanToJson(baseResult);
+    }
+
+    @GetMapping(value = "/addUserNoBatch",produces = "text/html;charset=UTF-8")
+    public Object addUserNoBatch() throws Exception{
+        long time = userService.noBatchTest();
+        BaseResult baseResult = new BaseResult();
+        baseResult.setResultMsg("success");
+        baseResult.setIsNeedLog(false);
+        baseResult.setTime(time);
+        return StringUtil.javabeanToJson(baseResult);
+    }
+
 
     @HystrixCommand(fallbackMethod = "error", commandProperties = {
             @HystrixProperty(name="execution.isolation.strategy", value = "THREAD"),

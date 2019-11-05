@@ -11,4 +11,8 @@ public interface UserService {
     List<User> selectUsers(User user);
 
     void addUser(User user);
+
+    long noBatchTest() throws Exception;
+
+    long batchTest() throws Exception;
 }

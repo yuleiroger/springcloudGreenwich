@@ -9,4 +9,5 @@ import lombok.Data;
 public class BaseResult {
     private Boolean isNeedLog;
     private String resultMsg;
+    private long time;
 }

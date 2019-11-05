@@ -2,6 +2,7 @@ package com.roger.springcloudGreenwich.dao;
 
 import com.roger.springcloudGreenwich.entities.MongoProducts;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,4 +21,6 @@ public interface MongoProductDao {
     void remove();
 
     MongoProducts update();
+
+    void saveProducts(LinkedList<MongoProducts> list);
 }
