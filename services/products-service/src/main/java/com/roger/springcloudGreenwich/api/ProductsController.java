@@ -37,7 +37,7 @@ public class ProductsController {
 
     @GetMapping(value = "/saveProducts")
     public String products(){
-
+        long begin = System.currentTimeMillis();
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(50);
         LinkedList<MongoProducts> list = new LinkedList();
         for(int i = 5; i < 1000; i++){
@@ -47,6 +47,7 @@ public class ProductsController {
             list.add(products);
         }
         mongoProductService.saveMongoProducts(list);
-        return "products success";
+        long end = System.currentTimeMillis();
+        return "products success:" + (end - begin);
     }
 }

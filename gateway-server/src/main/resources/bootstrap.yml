@@ -19,5 +19,8 @@ spring:
         uri: lb://products-service
         predicates:
         - Path=/products-service/**
-
+      - id: log_route
+        uri: lb://log-service
+        predicates:
+        - Path=/log-service/**
 

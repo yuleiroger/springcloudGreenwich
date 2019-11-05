@@ -24,4 +24,7 @@ public class MongoProducts implements Serializable{
 
     @Field("_id")
     private String id;
+
+    @Field("price")
+    private float price;
 }
