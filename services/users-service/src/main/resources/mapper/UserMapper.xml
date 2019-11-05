@@ -10,7 +10,7 @@
             and u.id=#{id}
         </if>
         <if test="userNo!=null and userNo != ''">
-            and u.user_no=#{userNo}
+            and UPPER(u.user_no)=#{userNo}
         </if>
         <if test="password!=null and password != ''">
             and u.password=#{password}

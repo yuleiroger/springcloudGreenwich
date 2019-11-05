@@ -27,6 +27,12 @@ public class StringUtil {
         return json;
     }
 
+    public static Object jsonToObject(String json,Class beanClass) {
+        Gson gson = new Gson();
+        Object res = gson.fromJson(json, beanClass);
+        return res;
+    }
+
     /**
      *
      * @param length

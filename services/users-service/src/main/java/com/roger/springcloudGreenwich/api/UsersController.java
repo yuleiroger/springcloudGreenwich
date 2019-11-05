@@ -3,6 +3,7 @@ package com.roger.springcloudGreenwich.api;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.roger.springcloudGreenwich.User;
+import com.roger.springcloudGreenwich.annotation.OperateLog;
 import com.roger.springcloudGreenwich.constant.Constants;
 import com.roger.springcloudGreenwich.message.KafkaSender;
 import com.roger.springcloudGreenwich.service.UserService;
@@ -39,32 +40,25 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/login")
+    //@OperateLog(key = "test", name="log", prefix = "operate")
+    @PostMapping(value = "/login",produces = "text/html;charset=UTF-8")
     public String login(HttpServletRequest request,
                         @RequestBody String params) throws Exception{
         log.info("login params is:{}", params);
-        String userNo = request.getParameter("userNo");
-        String password = request.getParameter("password");
-        log.info("user no is:{}", userNo);
-        log.info("password is:{}", password);
-        User user = new User();
-        user.setUserNo(userNo);
-        user.setPassword(MD5Util.md5Encode(password));
+        User user = (User)StringUtil.jsonToObject(params, User.class);
+        user.setPassword(MD5Util.md5Encode(user.getPassword()));
         List<User> list = userService.selectUsers(user);
         Map<String, String> map = new HashMap<>();
-        HttpSession session = request.getSession();
         if(list == null || list.isEmpty()){
             map.put("result","false");
         }else{
             map.put("result","success");
 
-            session.setAttribute("loginUser", list.get(0));
         }
-        log.info("session id is:{}", session.getId());
         return StringUtil.javabeanToJson(map);
     }
 
-    @GetMapping(value = "/getSession")
+    @GetMapping(value = "/getSession",produces = "text/html;charset=UTF-8")
     public Object getSession(HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
 
@@ -95,18 +89,25 @@ public class UsersController {
         return userList;
     }
 
-    @GetMapping(value = "/addUser")
-    public Object addUser(HttpServletRequest request) throws Exception{
+    @GetMapping(value = "/addUser",produces = "text/html;charset=UTF-8")
+    public Object addUser(HttpServletRequest request,@RequestBody String params) throws Exception{
         ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
-        User user = new User();
-        Long id = redisUtil.generateId("id");
-        log.info("id is:{}", id);
-        user.setId(id);
-        user.setUserNo(StringUtil.getRandomString(5));
-        user.setPassword(MD5Util.md5Encode("123456"));
-
-        userService.addUser(user);
+        User user = (User)StringUtil.jsonToObject(params, User.class);
+        String userNo = user.getUserNo();
+        user.setPassword(null);
+        user.setUserNo(userNo.toUpperCase());
+        List<User> list = userService.selectUsers(user);
+        if(!list.isEmpty()){
+            log.info("user {} is exist", user.getUserNo());
+            return "false";
+        }else{
+            Long id = redisUtil.generateId("id", 1);
+            user.setId(id);
+            user.setUserNo(userNo);
+            user.setPassword(MD5Util.md5Encode(user.getPassword()));
+            userService.addUser(user);
+        }
 
         return "success";
     }

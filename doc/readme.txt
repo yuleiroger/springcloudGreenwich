@@ -29,6 +29,9 @@ https://www.cnblogs.com/chanshuyi/p/mysql_user_mng.html
 
 https://windmt.com/2018/05/09/spring-cloud-15-spring-cloud-gateway-ratelimiter
 
+mvn
 https://www.cnblogs.com/jinshuaishuai/p/10831172.html
 
 https://blog.csdn.net/qq_35868811/article/details/90257663
+
+alter database test character set utf8;
