@@ -6,6 +6,7 @@ import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.annotation.OperateLog;
 import com.roger.springcloudGreenwich.constant.Constants;
 import com.roger.springcloudGreenwich.message.KafkaSender;
+import com.roger.springcloudGreenwich.result.BaseResult;
 import com.roger.springcloudGreenwich.service.UserService;
 import com.roger.springcloudGreenwich.util.RedisUtil;
 import com.roger.springcloudGreenwich.utils.MD5Util;
@@ -48,14 +49,17 @@ public class UsersController {
         User user = (User)StringUtil.jsonToObject(params, User.class);
         user.setPassword(MD5Util.md5Encode(user.getPassword()));
         List<User> list = userService.selectUsers(user);
-        Map<String, String> map = new HashMap<>();
-        if(list == null || list.isEmpty()){
-            map.put("result","false");
-        }else{
-            map.put("result","success");
 
+        String resultMsg;
+        if(list == null || list.isEmpty()){
+            resultMsg = "false";
+        }else{
+            resultMsg = "success";
         }
-        return StringUtil.javabeanToJson(map);
+        BaseResult baseResult = new BaseResult();
+        baseResult.setResultMsg(resultMsg);
+        baseResult.setIsNeedLog(false);
+        return StringUtil.javabeanToJson(baseResult);
     }
 
     @GetMapping(value = "/getSession",produces = "text/html;charset=UTF-8")
@@ -135,6 +139,9 @@ public class UsersController {
     }
 
     public Object error(HttpServletRequest request){
-        return "error";
+        BaseResult baseResult = new BaseResult();
+        baseResult.setResultMsg("success");
+        baseResult.setIsNeedLog(false);
+        return StringUtil.javabeanToJson(baseResult);
     }
 }

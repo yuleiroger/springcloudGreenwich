@@ -1,5 +1,7 @@
 package com.roger.springcloudGreenwich.aop;
 
+import com.roger.springcloudGreenwich.result.BaseResult;
+import com.roger.springcloudGreenwich.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -7,6 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -21,7 +24,6 @@ import java.util.Arrays;
 @Slf4j
 public class WebLogAspect {
 
-
     @Pointcut("execution(public * com.roger.springcloudGreenwich.api..*.*(..))")
     public void webLog(){}
 
@@ -32,18 +34,28 @@ public class WebLogAspect {
         HttpServletRequest request = attributes.getRequest();
 
         // 记录下请求内容
-        System.out.println("URL : " + request.getRequestURL().toString());
-        System.out.println("HTTP_METHOD : " + request.getMethod());
-        System.out.println("IP : " + request.getRemoteAddr());
-        System.out.println("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        System.out.println("ARGS : " + Arrays.toString(joinPoint.getArgs()));
-
+        log.info("URL : {}" , request.getRequestURL().toString());
+        log.info("HTTP_METHOD : {}" , request.getMethod());
+        log.info("IP : {}" , request.getRemoteAddr());
+        log.info("CLASS_METHOD : {}.{}" , joinPoint.getSignature().getDeclaringTypeName()  , joinPoint.getSignature().getName());
+        log.info("ARGS : {}" , Arrays.toString(joinPoint.getArgs()));
     }
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")
     public void doAfterReturning(Object ret) throws Throwable {
         // 处理完请求，返回内容
         log.info("RESPONSE : {}" ,ret);
+
+        if(!StringUtils.isEmpty(ret)){
+            BaseResult baseResult = (BaseResult) StringUtil.jsonToObject(ret.toString(), BaseResult.class);
+            if(baseResult.getIsNeedLog()){
+                log.info("save log");
+            }else{
+                log.info("do not save log");
+            }
+        }
+
+
     }
 
 }
