@@ -54,8 +54,6 @@ public class WebLogAspect {
                 log.info("do not save log");
             }
         }
-
-
     }
 
 }
