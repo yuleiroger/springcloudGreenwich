@@ -36,3 +36,5 @@ https://blog.csdn.net/qq_35868811/article/details/90257663
 
 redis
 https://redis.io/commands
+
+service vsftpd start
