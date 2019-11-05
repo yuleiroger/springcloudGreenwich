@@ -17,4 +17,5 @@ public class LogController {
     public Object index(){
         return "log service success";
     }
+
 }

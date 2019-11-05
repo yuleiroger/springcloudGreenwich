@@ -26,5 +26,4 @@ public class Log implements Serializable{
 
     @Field("create_time")
     private Date createTime;
-
 }
