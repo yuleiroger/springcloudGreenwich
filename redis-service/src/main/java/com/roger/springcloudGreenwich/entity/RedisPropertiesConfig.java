@@ -16,7 +16,6 @@ public class RedisPropertiesConfig {
     private String master = "mymaster";
     private int database = 0;
     private String password = "yulei";
-
     //////////////////////// redis pool配置
     private Integer maxIdle = 500;
     private Integer minIdle = 200;
