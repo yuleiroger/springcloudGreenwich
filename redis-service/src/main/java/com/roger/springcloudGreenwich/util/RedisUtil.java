@@ -1,7 +1,5 @@
 package com.roger.springcloudGreenwich.util;
 
-import com.roger.springcloudGreenwich.RedisProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
@@ -17,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RedisUtil {
-    private RedisTemplate<String,Object> redisTemplate;
+    private static RedisTemplate<String,Object> redisTemplate;
 
     public RedisUtil(RedisTemplate<String,Object> redisTemplate){
         this.redisTemplate = redisTemplate;
@@ -136,7 +134,6 @@ public class RedisUtil {
         if(age >= 5 && age <= 7){
 
         }
-
     }
 
 }
