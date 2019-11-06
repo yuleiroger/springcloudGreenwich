@@ -1,6 +1,5 @@
 package com.roger.springcloudGreenwich.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
@@ -16,8 +15,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RedisUtil {
-    @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private static RedisTemplate<String,Object> redisTemplate;
+
+    public RedisUtil(RedisTemplate<String,Object> redisTemplate){
+        this.redisTemplate = redisTemplate;
+    }
 
     public Object getRedisValue(String key){
         Object redisValue = redisTemplate.opsForValue().get(key);

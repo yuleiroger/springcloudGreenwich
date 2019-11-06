@@ -1,6 +1,10 @@
 package com.roger.springcloudGreenwich.component;
 
+import com.roger.springcloudGreenwich.util.RedisUtil;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,5 +36,7 @@ public class RedisProperties {
     private Boolean cluster = true; // 是否配置集群
     private String host = "127.0.0.1";
     private Integer port = 23679;
+
+
 
 }

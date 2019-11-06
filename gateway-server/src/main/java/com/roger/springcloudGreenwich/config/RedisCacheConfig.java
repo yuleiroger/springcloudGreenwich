@@ -118,6 +118,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         LettuceConnectionFactory factory;
+        log.info("redisProperties ====={}", redisProperties);
         if (redisProperties.getCluster()) {
             factory = new LettuceConnectionFactory(redisSentinelConfiguration, lettuceClientConfiguration);
         } else {

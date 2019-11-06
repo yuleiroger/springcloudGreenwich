@@ -33,7 +33,7 @@ import java.util.List;
 public class RequestFilter implements GlobalFilter, Ordered {
 
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtil gatewayRedisUtil;
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, GatewayFilterChain gatewayFilterChain) {
@@ -50,8 +50,8 @@ public class RequestFilter implements GlobalFilter, Ordered {
         Object obj;
         Object id;
         try{
-            obj = redisUtil.getRedisValue(MD5Util.md5Encode("admin"));
-            id = redisUtil.getRedisValue("id");
+            obj = gatewayRedisUtil.getRedisValue(MD5Util.md5Encode("admin"));
+            id = gatewayRedisUtil.getRedisValue("id");
             log.info("obj is:{}", obj);
             log.info("id is:{}", id);
             if(obj != null){
