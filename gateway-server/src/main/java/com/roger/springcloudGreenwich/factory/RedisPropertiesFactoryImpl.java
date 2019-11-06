@@ -5,7 +5,7 @@ import com.ctrip.framework.apollo.ConfigService;
 import com.roger.springcloudGreenwich.RedisProperties;
 
 /**
- * Created by admin on 2019/11/6.
+ * Created by yulei on 2019/11/6.
  */
 public class RedisPropertiesFactoryImpl extends RedisPropertiesFactory{
     @Override
