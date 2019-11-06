@@ -54,7 +54,6 @@ public class RedisUtil {
         redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
 
-
     public void removeFromList(String key, Object value){
         redisTemplate.opsForList().remove(key, 1, value);
     }
@@ -74,6 +73,12 @@ public class RedisUtil {
         redisTemplate.opsForSet().add(key, value);
         redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
+
+    public void setHSet(String redisKey, String mapKey, Object value){
+        redisTemplate.opsForHash().put(redisKey, mapKey, value);
+    }
+
+
 
     public Set<?> getSet(String key){
         Set<?> set = redisTemplate.opsForSet().members(key);

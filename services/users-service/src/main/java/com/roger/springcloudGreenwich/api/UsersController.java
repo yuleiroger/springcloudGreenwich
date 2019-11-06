@@ -2,6 +2,7 @@ package com.roger.springcloudGreenwich.api;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.roger.springcloudGreenwich.RedisSession;
 import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.message.KafkaSender;
 import com.roger.springcloudGreenwich.result.BaseResult;
@@ -44,6 +45,9 @@ public class UsersController {
         if(list == null || list.isEmpty()){
             resultMsg = "false";
         }else{
+            RedisSession session = new RedisSession();
+            session.setAttribute("loginUser", user);
+            userServiceRedisUtil.setHSet("session", session.getSessionId(), session);
             resultMsg = "success";
         }
         BaseResult baseResult = new BaseResult();
@@ -54,14 +58,13 @@ public class UsersController {
 
     @GetMapping(value = "/getSession",produces = "text/html;charset=UTF-8")
     public Object getSession(HttpServletRequest request) throws Exception{
-        HttpSession session = request.getSession();
+        RedisSession session = new RedisSession();
 
-        log.info("session id is:{}", session.getId());
+        log.info("session id is:{}", session.getSessionId());
         if(session.getAttribute("loginUser") == null){
             log.info("session is null");
             return null;
         }else{
-            log.info("session id is:{}" + session.getId());
             User user = (User)session.getAttribute("loginUser");
             return StringUtil.javabeanToJson(user);
         }
