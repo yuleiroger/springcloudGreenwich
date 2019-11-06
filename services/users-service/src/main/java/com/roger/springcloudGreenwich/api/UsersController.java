@@ -3,8 +3,6 @@ package com.roger.springcloudGreenwich.api;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.roger.springcloudGreenwich.User;
-import com.roger.springcloudGreenwich.annotation.OperateLog;
-import com.roger.springcloudGreenwich.constant.Constants;
 import com.roger.springcloudGreenwich.message.KafkaSender;
 import com.roger.springcloudGreenwich.result.BaseResult;
 import com.roger.springcloudGreenwich.service.UserService;
@@ -15,15 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,10 +33,8 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    //@OperateLog(key = "test", name="log", prefix = "operate")
     @PostMapping(value = "/login",produces = "text/html;charset=UTF-8")
-    public String login(HttpServletRequest request,
-                        @RequestBody String params) throws Exception{
+    public String login(@RequestBody String params) throws Exception{
         log.info("login params is:{}", params);
         User user = (User)StringUtil.jsonToObject(params, User.class);
         user.setPassword(MD5Util.md5Encode(user.getPassword()));
@@ -139,7 +129,7 @@ public class UsersController {
 
     @HystrixCommand(fallbackMethod = "error", commandProperties = {
             @HystrixProperty(name="execution.isolation.strategy", value = "THREAD"),
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000"),
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000"),//请求时间，毫秒
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
             @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "40")
     }, threadPoolProperties = {
