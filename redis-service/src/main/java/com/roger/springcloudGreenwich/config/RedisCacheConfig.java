@@ -3,9 +3,7 @@ package com.roger.springcloudGreenwich.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.roger.springcloudGreenwich.RedisProperties;
-import com.roger.springcloudGreenwich.factory.redis.RedisPropertiesFactory;
-import com.roger.springcloudGreenwich.factory.redis.RedisPropertiesFactoryImpl;
+import com.roger.springcloudGreenwich.component.RedisProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +33,8 @@ import java.util.Set;
 @Slf4j
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
-    private static RedisProperties redisProperties;
-    private static RedisPropertiesFactory redisPropertiesFactory;
-    static {
-        redisPropertiesFactory = new RedisPropertiesFactoryImpl();
-        redisProperties = redisPropertiesFactory.generateRedisProperties();
-    }
+    @Autowired
+    private RedisProperties redisProperties;
 
     @Autowired
     private LettucePoolingClientConfiguration lettuceClientConfiguration;
