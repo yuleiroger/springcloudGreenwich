@@ -15,6 +15,12 @@ import java.util.Date;
 public class Log implements Serializable{
     private static final long serialVersionUID = -7181408185204302333L;
 
+    @Field("ip")
+    private String ip;
+
+    @Field("service_name")
+    private String serviceName;
+
     @Field("level")
     private String level;
 
