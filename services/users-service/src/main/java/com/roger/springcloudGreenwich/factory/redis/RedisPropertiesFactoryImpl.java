@@ -15,7 +15,7 @@ public class RedisPropertiesFactoryImpl extends RedisPropertiesFactory{
         redisProperties.setRedisNodes(config.getProperty("spring.redis.sentinel.nodes",""));
         redisProperties.setMaster(config.getProperty("spring.redis.sentinel.master",""));
         redisProperties.setDatabase(0);
-        redisProperties.setPassword(config.getProperty("redis.password",""));
+        redisProperties.setPassword(config.getProperty("spring.redis.password",""));
         //////////////////////// redis pool配置
         redisProperties.setMaxIdle(500);
         redisProperties.setMinIdle(200);

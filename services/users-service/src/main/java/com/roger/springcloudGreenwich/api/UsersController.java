@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 @RequestMapping("/users-service")
 public class UsersController {
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtil userServiceRedisUtil;
     @Autowired
     private KafkaSender kafkaSender;
     @Autowired
@@ -96,7 +96,7 @@ public class UsersController {
             log.info("user {} is exist", user.getUserNo());
             return "false";
         }else{
-            Long id = redisUtil.generateId("id", 1);
+            Long id = userServiceRedisUtil.generateId("id", 1);
             user.setId(id);
             user.setUserNo(userNo);
             user.setPassword(MD5Util.md5Encode(user.getPassword()));

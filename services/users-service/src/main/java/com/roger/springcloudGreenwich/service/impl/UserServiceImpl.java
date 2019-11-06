@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtil userServiceRedisUtil;
 
     @Override
     public List<User> selectUsers(User user) {
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService{
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         User user;
         for (int i = 0; i < 100; i++) {
-            Long id = redisUtil.generateId("id", 1);
+            Long id = userServiceRedisUtil.generateId("id", 1);
             user = new User();
             user.setId(id);
             user.setUserNo(StringUtil.getRandomString(5));
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService{
         long begin = System.currentTimeMillis();
         User user;
         for (int i = 0; i < 100; i++) {
-            Long id = redisUtil.generateId("id", 1);
+            Long id = userServiceRedisUtil.generateId("id", 1);
             user = new User();
             user.setId(id);
             user.setUserNo(StringUtil.getRandomString(5));

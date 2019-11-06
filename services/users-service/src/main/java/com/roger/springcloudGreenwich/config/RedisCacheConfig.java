@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roger.springcloudGreenwich.RedisProperties;
 import com.roger.springcloudGreenwich.factory.redis.RedisPropertiesFactory;
 import com.roger.springcloudGreenwich.factory.redis.RedisPropertiesFactoryImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,6 +32,7 @@ import java.util.Set;
  */
 @Configuration
 @EnableCaching
+@Slf4j
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
     private static RedisProperties redisProperties;
@@ -66,6 +68,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
         }
         sentinelConfig.setSentinels(sentinels);
         sentinelConfig.setDatabase(redisProperties.getDatabase());
+        log.info("redis password ====:{}",redisProperties.getPassword());
         sentinelConfig.setPassword(RedisPassword.of(redisProperties.getPassword())); //redis 密码
         return sentinelConfig;
     }
