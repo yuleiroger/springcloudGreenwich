@@ -33,11 +33,11 @@ import java.util.List;
 public class RequestFilter implements GlobalFilter, Ordered {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisUtil gatewayRedisUtil;
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, GatewayFilterChain gatewayFilterChain) {
-        RedisUtil redisUtil = new RedisUtil(redisTemplate);
+
         ServerHttpRequest request = serverWebExchange.getRequest();
         HttpHeaders headers = request.getHeaders();
         MultiValueMap<String, HttpCookie> cookies = request.getCookies();
@@ -50,8 +50,8 @@ public class RequestFilter implements GlobalFilter, Ordered {
         Object obj;
         Object id;
         try{
-            obj = redisUtil.getRedisValue(MD5Util.md5Encode("admin"));
-            id = redisUtil.getRedisValue("id");
+            obj = gatewayRedisUtil.getRedisValue(MD5Util.md5Encode("admin"));
+            id = gatewayRedisUtil.getRedisValue("id");
             log.info("obj is:{}", obj);
             log.info("id is:{}", id);
             if(obj != null){
