@@ -12,6 +12,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -32,10 +33,11 @@ import java.util.List;
 public class RequestFilter implements GlobalFilter, Ordered {
 
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, GatewayFilterChain gatewayFilterChain) {
+        RedisUtil redisUtil = new RedisUtil(redisTemplate);
         ServerHttpRequest request = serverWebExchange.getRequest();
         HttpHeaders headers = request.getHeaders();
         MultiValueMap<String, HttpCookie> cookies = request.getCookies();
