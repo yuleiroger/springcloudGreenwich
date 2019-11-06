@@ -1,8 +1,6 @@
 package com.roger.springcloudGreenwich.entity;
 
 import lombok.Data;
-import lombok.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,7 +8,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@Configuration
+//@Configuration
 public class RedisPropertiesConfig {
     private String redisNodes = "192.168.100.131:26379,192.168.100.131:26380,192.168.100.131:26380";
     private String master = "mymaster";

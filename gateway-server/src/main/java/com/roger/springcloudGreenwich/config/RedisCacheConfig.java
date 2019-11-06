@@ -3,7 +3,6 @@ package com.roger.springcloudGreenwich.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.roger.springcloudGreenwich.entity.RedisPropertiesConfig;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,6 +32,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
 
     @Autowired
     private RedisPropertiesConfig redisProperties;
+
     @Autowired
     private LettucePoolingClientConfiguration lettuceClientConfiguration;
     @Autowired
