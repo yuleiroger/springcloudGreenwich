@@ -6,6 +6,5 @@ package com.roger.springcloudGreenwich.constant;
 public class Constants {
     public static final String TestKey = "testKey";
     public static final String TestValue = "testValue";
-
     public final static String KafkaTopic = "test";
 }
