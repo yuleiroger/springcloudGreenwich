@@ -1,5 +1,7 @@
 package com.roger.springcloudGreenwich.component;
 
+import com.ctrip.framework.apollo.Config;
+import com.ctrip.framework.apollo.ConfigService;
 import com.roger.springcloudGreenwich.util.RedisUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,11 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class RedisProperties {
-    private String redisNodes = "192.168.100.131:26379,192.168.100.131:26380,192.168.100.131:26380";
-    private String master = "mymaster";
+    Config config = ConfigService.getAppConfig();
+    private String redisNodes = config.getProperty("redis.nodes", "");
+    private String master = config.getProperty("redis.master","");
     private int database = 0;
-    private String password = "yulei";
+    private String password = config.getProperty("redis.password","");
     //////////////////////// redis pool配置
     private Integer maxIdle = 500;
     private Integer minIdle = 200;

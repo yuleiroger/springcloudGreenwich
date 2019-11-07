@@ -35,7 +35,6 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
 
     @Autowired
     private RedisProperties redisProperties;
-
     @Autowired
     private LettucePoolingClientConfiguration lettuceClientConfiguration;
     @Autowired

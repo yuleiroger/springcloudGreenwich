@@ -48,12 +48,10 @@ public class UsersController {
         String resultMsg = null;
 
         //query from redis firstly
-        Object redidResult = userServiceRedisUtil.getRedisValue("users");
+        Object redidResult = userServiceRedisUtil.HGet("users", user.getUserNo());
         log.info("query from redis result is:{}", redidResult);
-        ConcurrentMap<String,User> redisMap = new ConcurrentHashMap<>();
         if(redidResult != null){
-            redisMap = (ConcurrentMap<String,User>)redidResult;
-            User redisUser = redisMap.get(user.getUserNo());
+            User redisUser = (User)redidResult;
             if(redisUser.getPassword().equals(user.getPassword())){
                 log.info("query from redis user is={}",redisUser);
                 resultMsg = "success";
@@ -67,9 +65,8 @@ public class UsersController {
             if(list == null || list.isEmpty()){
                 resultMsg = "false";
             }else{
-                //login success
-                redisMap.put(user.getUserNo(), user);
-                userServiceRedisUtil.setObject("users", redisMap, 4 * 30L);
+                //login success first time
+                userServiceRedisUtil.HSet("users", user.getUserNo(), user, 120L);
                 resultMsg = "success";
             }
         }

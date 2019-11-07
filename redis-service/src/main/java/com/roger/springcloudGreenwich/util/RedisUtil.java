@@ -74,9 +74,12 @@ public class RedisUtil {
         redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
 
-    public void HSet(String redisKey, String mapKey, Object value){
+    public void HSet(String redisKey, String mapKey, Object value, Long expireTime){
         redisTemplate.opsForHash().put(redisKey, mapKey, value);
-        redisTemplate.expire(redisKey, 30, TimeUnit.MINUTES);
+        if(expireTime == null){
+            expireTime = 30L;
+        }
+        redisTemplate.expire(redisKey, expireTime, TimeUnit.MINUTES);
     }
 
     public Object HGet(String redisKey, String field){
