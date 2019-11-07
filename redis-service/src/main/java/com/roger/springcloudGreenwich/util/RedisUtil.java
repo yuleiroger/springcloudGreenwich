@@ -74,10 +74,14 @@ public class RedisUtil {
         redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
 
-    public void setHSet(String redisKey, String mapKey, Object value){
+    public void HSet(String redisKey, String mapKey, Object value){
         redisTemplate.opsForHash().put(redisKey, mapKey, value);
+        redisTemplate.expire(redisKey, 30, TimeUnit.MINUTES);
     }
 
+    public Object HGet(String redisKey, String field){
+        return redisTemplate.opsForHash().get(redisKey, field);
+    }
 
 
     public Set<?> getSet(String key){

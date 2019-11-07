@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by admin on 2019/10/21.
+ * Created by Roger on 2019/10/21.
+ * 用户controller层
  */
 @RestController
 @Slf4j
@@ -39,17 +43,37 @@ public class UsersController {
         log.info("login params is:{}", params);
         User user = (User)StringUtil.jsonToObject(params, User.class);
         user.setPassword(MD5Util.md5Encode(user.getPassword()));
-        List<User> list = userService.selectUsers(user);
 
-        String resultMsg;
-        if(list == null || list.isEmpty()){
-            resultMsg = "false";
-        }else{
-            RedisSession session = new RedisSession();
-            session.setAttribute("loginUser", user);
-            userServiceRedisUtil.setHSet("session", session.getSessionId(), session);
-            resultMsg = "success";
+        boolean queryFromRedis = false;
+        String resultMsg = null;
+
+        //query from redis firstly
+        Object redidResult = userServiceRedisUtil.getRedisValue("users");
+        log.info("query from redis result is:{}", redidResult);
+        ConcurrentMap<String,User> redisMap = new ConcurrentHashMap<>();
+        if(redidResult != null){
+            redisMap = (ConcurrentMap<String,User>)redidResult;
+            User redisUser = redisMap.get(user.getUserNo());
+            if(redisUser.getPassword().equals(user.getPassword())){
+                log.info("query from redis user is={}",redisUser);
+                resultMsg = "success";
+                queryFromRedis = true;
+                userServiceRedisUtil.expandExpiration(user.getUserNo(), 4 * 30);
+            }
         }
+        //query from mysql
+        if(!queryFromRedis){
+            List<User> list = userService.selectUsers(user);
+            if(list == null || list.isEmpty()){
+                resultMsg = "false";
+            }else{
+                //login success
+                redisMap.put(user.getUserNo(), user);
+                userServiceRedisUtil.setObject("users", redisMap, 4 * 30L);
+                resultMsg = "success";
+            }
+        }
+
         BaseResult baseResult = new BaseResult();
         baseResult.setResultMsg(resultMsg);
         baseResult.setIsNeedLog(false);
@@ -58,6 +82,7 @@ public class UsersController {
 
     @GetMapping(value = "/getSession",produces = "text/html;charset=UTF-8")
     public Object getSession(HttpServletRequest request) throws Exception{
+        ConcurrentMap<String,RedisSession> map = (ConcurrentHashMap)userServiceRedisUtil.getRedisValue("session");
         RedisSession session = new RedisSession();
 
         log.info("session id is:{}", session.getSessionId());
@@ -71,14 +96,13 @@ public class UsersController {
     }
 
     @GetMapping(value = "/logout")
-    public String logout(HttpServletRequest request,
-                        @RequestBody String params) throws Exception{
+    public String logout(@RequestBody String params) throws Exception{
         log.info("login params is:{}", params);
         return "logout success";
     }
 
     @GetMapping(value = "/getUser")
-    public Object getUser(HttpServletRequest request){
+    public Object getUser(){
         log.info("send message to kafka");
         kafkaSender.send("hello world");
         User user = new User();
@@ -151,6 +175,11 @@ public class UsersController {
         return "send success";
     }
 
+    /**
+     * 降级方法里的参数需要和主方法一致
+     * @param request
+     * @return
+     */
     public Object error(HttpServletRequest request){
         BaseResult baseResult = new BaseResult();
         baseResult.setResultMsg("success");
