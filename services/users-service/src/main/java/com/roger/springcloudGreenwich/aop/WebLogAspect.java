@@ -46,18 +46,24 @@ public class WebLogAspect {
     }
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")
-    public void doAfterReturning(Object ret) throws Throwable {
+    public void doAfterReturning(Object ret) {
         // 处理完请求，返回内容
         log.info("RESPONSE : {}" ,ret);
 
         if(!StringUtils.isEmpty(ret)){
-            BaseResult baseResult = (BaseResult) StringUtil.jsonToObject(ret.toString(), BaseResult.class);
-            if(baseResult.getIsNeedLog()){
-                log.info("save log");
-                kafkaSender.send(baseResult.getResultMsg());
-            }else{
-                log.info("do not save log");
+            try {
+                BaseResult baseResult = (BaseResult) StringUtil.jsonToObject(ret.toString(), BaseResult.class);
+                if(baseResult.getIsNeedLog()){
+                    log.info("save log");
+                    kafkaSender.send(baseResult.getResultMsg());
+                }else{
+                    log.info("do not save log");
+                }
+            }catch(Exception e){
+                log.info("can not cast to BaseResult");
+                e.printStackTrace();
             }
+
         }
     }
 
