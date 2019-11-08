@@ -16,6 +16,7 @@
         <module>entitys</module>
         <module>mongodb-service</module>
         <module>message-queue-server</module>
+        <module>admin-server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
