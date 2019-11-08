@@ -133,6 +133,10 @@ public class RedisUtil {
         return redisTemplate.execute(script, keyList, argvMap);
     }
 
+    public void getCount(String redisScript, List<String> keys){
+        //redisTemplate.ex.execute(redisScript, keys)
+    }
+
     public static void main(String[] args) {
         Integer i1 = 128;
         Integer i2 = 128;

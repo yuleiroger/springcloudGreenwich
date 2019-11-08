@@ -7,4 +7,6 @@ public class Constants {
     public static final String TestKey = "testKey";
     public static final String TestValue = "testValue";
     public final static String KafkaTopic = "test";
+    public final static String SUCCESS = "success";
+    public final static String FALSE = "false";
 }

@@ -5,12 +5,15 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.roger.springcloudGreenwich.RedisSession;
 import com.roger.springcloudGreenwich.User;
 import com.roger.springcloudGreenwich.annotation.Limit;
+import com.roger.springcloudGreenwich.constant.Constants;
+import com.roger.springcloudGreenwich.jwt.JwtUtil;
 import com.roger.springcloudGreenwich.message.KafkaSender;
 import com.roger.springcloudGreenwich.result.BaseResult;
 import com.roger.springcloudGreenwich.service.UserService;
 import com.roger.springcloudGreenwich.util.RedisUtil;
 import com.roger.springcloudGreenwich.utils.MD5Util;
 import com.roger.springcloudGreenwich.utils.StringUtil;
+import jdk.nashorn.internal.parser.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +59,7 @@ public class UsersController {
             User redisUser = (User)redidResult;
             if(redisUser.getPassword().equals(user.getPassword())){
                 log.info("query from redis user is={}",redisUser);
-                resultMsg = "success";
+                resultMsg = Constants.SUCCESS;
                 queryFromRedis = true;
                 userServiceRedisUtil.expandExpiration(user.getUserNo(), 4 * 30);
             }
@@ -65,15 +68,22 @@ public class UsersController {
         if(!queryFromRedis){
             List<User> list = userService.selectUsers(user);
             if(list == null || list.isEmpty()){
-                resultMsg = "false";
+                resultMsg = Constants.FALSE;
             }else{
                 //login success first time
                 userServiceRedisUtil.HSet("users", user.getUserNo(), user, 120L);
-                resultMsg = "success";
+                resultMsg = Constants.SUCCESS;
             }
         }
-
         BaseResult baseResult = new BaseResult();
+        if(Constants.SUCCESS.equals(resultMsg)){
+            String jwt = JwtUtil.getToken(user.getUserNo());
+            String token = "Bearer:" +jwt;
+            baseResult.setToken(token);
+            userServiceRedisUtil.setObject(token, user, null);
+
+        }
+
         baseResult.setResultMsg(resultMsg);
         baseResult.setIsNeedLog(false);
         return StringUtil.javabeanToJson(baseResult);
