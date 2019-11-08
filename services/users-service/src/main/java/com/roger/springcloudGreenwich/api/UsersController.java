@@ -4,6 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.roger.springcloudGreenwich.RedisSession;
 import com.roger.springcloudGreenwich.User;
+import com.roger.springcloudGreenwich.annotation.Limit;
 import com.roger.springcloudGreenwich.message.KafkaSender;
 import com.roger.springcloudGreenwich.result.BaseResult;
 import com.roger.springcloudGreenwich.service.UserService;
@@ -38,6 +39,7 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
+    @Limit(key = "test", period = 100, count = 2, name="resource", prefix = "limit")
     @PostMapping(value = "/login",produces = "text/html;charset=UTF-8")
     public String login(@RequestBody String params) throws Exception{
         log.info("login params is:{}", params);
