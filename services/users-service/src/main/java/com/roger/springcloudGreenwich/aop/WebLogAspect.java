@@ -3,12 +3,10 @@ package com.roger.springcloudGreenwich.aop;
 import com.roger.springcloudGreenwich.message.KafkaSender;
 import com.roger.springcloudGreenwich.result.BaseResult;
 import com.roger.springcloudGreenwich.utils.StringUtil;
+import freemarker.core.ReturnInstruction;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -63,8 +61,13 @@ public class WebLogAspect {
                 log.info("can not cast to BaseResult");
                 e.printStackTrace();
             }
-
         }
     }
 
+    @AfterThrowing(throwing = "exp", pointcut = "webLog()")
+    public void logMethodException(JoinPoint joinPoint, Exception exp){
+        log.info("exception class is={}",joinPoint.getClass());
+        log.info("exception is={}", exp.getMessage());
+        //TODO save log
+    }
 }

@@ -28,7 +28,7 @@ public class CustomRule extends AbstractLoadBalancerRule {
 
     @Override
     public Server choose(Object key) {
-        log.info("走自定义负载均衡策略");
+        //log.info("走自定义负载均衡策略");
         ILoadBalancer lb = getLoadBalancer();
         if (lb == null) {
             return null;

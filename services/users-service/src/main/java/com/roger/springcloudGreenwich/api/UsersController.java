@@ -42,9 +42,9 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @Limit(key = "test", period = 100, count = 2, name="resource", prefix = "limit")
+    //@Limit(key = "test", period = 100, count = 2, name="resource", prefix = "limit")
     @PostMapping(value = "/login",produces = "text/html;charset=UTF-8")
-    public String login(@RequestBody String params) throws Exception{
+    public String login(@RequestParam String params) throws Exception{
         log.info("login params is:{}", params);
         User user = (User)StringUtil.jsonToObject(params, User.class);
         user.setPassword(MD5Util.md5Encode(user.getPassword()));
@@ -194,5 +194,10 @@ public class UsersController {
         baseResult.setResultMsg("success");
         baseResult.setIsNeedLog(false);
         return StringUtil.javabeanToJson(baseResult);
+    }
+
+    @GetMapping("/exp")
+    public void generateException(){
+        int i = 1/0;
     }
 }

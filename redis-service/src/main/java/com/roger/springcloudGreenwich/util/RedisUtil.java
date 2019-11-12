@@ -34,16 +34,11 @@ public class RedisUtil {
         redisTemplate.delete(key);
     }
 
-    public Set<String> getKeys(){
-        return redisTemplate.keys("*");
-    }
-
     public void setList(String key , Object value, Long expireTime){
         redisTemplate.opsForList().leftPush(key, value);
         if(expireTime == null){
             expireTime = 30L;
         }
-
     }
 
     public void setObject(String key, Object obj, Long expireTime){

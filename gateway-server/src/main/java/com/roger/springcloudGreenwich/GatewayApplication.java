@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableApolloConfig
-@RibbonClient(name = "myLoadBalance", configuration = MyRuleConfig.class)
+//@RibbonClient(name = "myLoadBalance", configuration = MyRuleConfig.class)
 public class GatewayApplication {
 
     public static void main(String[] args){
