@@ -21,22 +21,20 @@ public class HealthExamination implements IPing {
     @Override
     public boolean isAlive(Server server) {
         log.info("server id is===={}",server.getId());
+
         String url = "http://" + server.getId() + "/health";
 
-        try
-        {
+        try {
             ResponseEntity<String> heath = restTemplate.getForEntity(url, String.class);
-            if (heath.getStatusCode() == HttpStatus.OK)
-            {
-                System.out.println("ping " + url + " success and response is " + heath.getBody());
+            if (heath.getStatusCode() == HttpStatus.OK) {
+                log.info("ping {} success and response is {}", url, heath.getBody());
                 return true;
             }
-            System.out.println("ping " + url + " error and response is " + heath.getBody());
+            log.info("ping {} error and response is {}", url, heath.getBody());
             return false;
         }
-        catch (Exception e)
-        {
-            System.out.println("ping " + url + " failed");
+        catch (Exception e){
+            log.info("ping {} failed", url);
             return false;
         }
 

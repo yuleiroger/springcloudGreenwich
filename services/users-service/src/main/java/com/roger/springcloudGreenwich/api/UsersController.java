@@ -200,4 +200,10 @@ public class UsersController {
     public void generateException(){
         int i = 1/0;
     }
+
+    @GetMapping("/health")
+    @ResponseBody
+    public String healthExamination(){
+        return "ok";
+    }
 }
