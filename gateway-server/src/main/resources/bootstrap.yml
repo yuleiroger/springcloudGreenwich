@@ -27,3 +27,7 @@ spring:
 users-service:
   ribbon:
     NFLoadBalancerRuleClassName: com.roger.springcloudGreenwich.rules.UserServerLoadBalanceRule
+
+products-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.roger.springcloudGreenwich.rules.ProductServerLoadBalanceRule
