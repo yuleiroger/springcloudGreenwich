@@ -1,9 +1,8 @@
 package com.roger.springcloudGreenwich.config;
 
 import com.netflix.loadbalancer.IRule;
-import com.roger.springcloudGreenwich.rules.CustomRule;
+import com.roger.springcloudGreenwich.rules.UserServerLoadBalanceRule;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by admin on 2019/8/27.
@@ -12,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 public class MyRuleConfig {
     @Bean
     public IRule myselfRule(){
-        return new CustomRule();
+        return new UserServerLoadBalanceRule();
     }
 }

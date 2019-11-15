@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by admin on 2019/11/12.
  */
-@Component
+//@Component
 @Slf4j
 public class HealthExamination implements IPing {
     //https://www.cnblogs.com/ye-feng-yu/p/11106006.html

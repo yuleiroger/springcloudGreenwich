@@ -12,7 +12,7 @@ import java.util.List;
  * Created by admin on 2019/8/27.
  */
 @Slf4j
-public class CustomRule extends AbstractLoadBalancerRule {
+public class UserServerLoadBalanceRule extends AbstractLoadBalancerRule {
 
     /**
      * 总共被调用的次数，目前要求每台被调用4次
@@ -41,7 +41,7 @@ public class CustomRule extends AbstractLoadBalancerRule {
             }
             // 获取可用服务列表
             List<Server> upList = lb.getReachableServers();
-            log.info("可用服务列表个数：{}",upList.size());
+            log.info("user server可用服务列表个数：{}",upList.size());
             // 获取所有服务列表
             List<Server> allList = lb.getAllServers();
             int serverCount = allList.size();
