@@ -2,11 +2,7 @@ package com.roger.springcloudGreenwich.component;
 
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigService;
-import com.roger.springcloudGreenwich.util.RedisUtil;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
