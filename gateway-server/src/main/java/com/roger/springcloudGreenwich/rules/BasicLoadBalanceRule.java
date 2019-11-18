@@ -40,7 +40,7 @@ public class BasicLoadBalanceRule extends AbstractLoadBalancerRule {
             }
             // 获取可用服务列表
             List<Server> upList = lb.getReachableServers();
-            log.info("user server可用服务列表个数：{}",upList.size());
+            log.info("可用服务列表个数：{}",upList.size());
             // 获取所有服务列表
             List<Server> allList = lb.getAllServers();
             int serverCount = allList.size();
