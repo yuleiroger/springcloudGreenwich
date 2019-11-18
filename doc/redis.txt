@@ -4,3 +4,5 @@ exists key
 查看一个键值的类型
 object encoding key
 
+redis的一个列表最多能存2的32次方减1个元素
+
