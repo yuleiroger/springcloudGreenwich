@@ -9,16 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 /**
- * Created by admin on 2019/8/27.
+ * Created by admin on 2019/11/18.
  */
 @Slf4j
-public class UserServerLoadBalanceRule extends AbstractLoadBalancerRule {
-
+public class BasicLoadBalanceRule extends AbstractLoadBalancerRule {
     /**
      * 总共被调用的次数，目前要求每台被调用4次
      */
     private int total = 0;
-
     /**
      * 当前提供服务列表的索引
      */
