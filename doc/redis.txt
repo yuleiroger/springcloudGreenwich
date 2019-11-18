@@ -1,0 +1,6 @@
+查看一个键是否存在
+exists key
+
+查看一个键值的类型
+object encoding key
+
