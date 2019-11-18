@@ -36,6 +36,5 @@ public class HealthExamination implements IPing {
             log.info("ping {} failed", url);
             return false;
         }
-
     }
 }
