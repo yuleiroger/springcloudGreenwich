@@ -11,6 +11,7 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,8 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Autowired
-    private RedisUtil userServiceRedisUtil;
+    private RedisTemplate<String, Object> redisTemplate;
+    private RedisUtil userServiceRedisUtil = new RedisUtil(redisTemplate);
 
     @Override
     public List<User> selectUsers(User user) {

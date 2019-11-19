@@ -39,6 +39,7 @@ public class RedisUtil {
         if(expireTime == null){
             expireTime = 30L;
         }
+        redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
     }
 
     public void setObject(String key, Object obj, Long expireTime){
