@@ -33,6 +33,4 @@ public class RedisProperties {
     private String host = "127.0.0.1";
     private Integer port = 23679;
 
-
-
 }

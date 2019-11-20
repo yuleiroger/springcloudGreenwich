@@ -2,6 +2,8 @@ package com.roger.springcloudGreenwich;
 
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 
+import com.roger.springcloudGreenwich.utils.DesEncryptUtils;
+import com.roger.springcloudGreenwich.utils.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,10 +34,14 @@ public class GatewayApplication {
     @Value("${deploy.licence}")
     private String licence;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     public static void main(String[] args){
+        String localMac = SystemUtil.getMacAddress();
+        String licenceMac = SystemUtil.read();
+        licenceMac = DesEncryptUtils.decrypt(licenceMac);
+
+        if(licenceMac == null || !licenceMac.equals(localMac)){
+          return;
+        }
         SpringApplication.run(GatewayApplication.class,args);
     }
 
