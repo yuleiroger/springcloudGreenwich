@@ -14,6 +14,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableApolloConfig
 @EnableCircuitBreaker//支持熔断
 public class UsersApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(UsersApplication.class, args);
     }

@@ -9,7 +9,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -30,7 +32,14 @@ public class LimitInterceptor {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private StringEncryptor stringEncryptor;
 
+    @Bean
+    public void printPwd(){
+        String result = stringEncryptor.encrypt("yuleiroger");
+        //System.out.println("result ====   " +result);
+    }
 
     @Around("execution(public * *(..)) && @annotation(com.roger.springcloudGreenwich.annotation.Limit)")
     public Object interceptor(ProceedingJoinPoint pjp) {
