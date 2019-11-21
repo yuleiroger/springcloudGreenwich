@@ -201,9 +201,5 @@ public class UsersController {
         int i = 1/0;
     }
 
-    @GetMapping("/health")
-    @ResponseBody
-    public String healthExamination(){
-        return "ok";
-    }
+
 }
