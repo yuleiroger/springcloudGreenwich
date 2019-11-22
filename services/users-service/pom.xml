@@ -107,7 +107,7 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
-            <version>2.1.6</version>
+            <version>2.1.0</version>
         </dependency>
         <!-- 数据库加密 -->
         <dependency>
