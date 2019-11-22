@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by admin on 2019/11/19.
  */
-@Component
+//@Component
 @Slf4j
 public class RedisTest {
     @Autowired
