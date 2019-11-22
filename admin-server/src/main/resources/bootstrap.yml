@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    consul:
+      discovery:
+        service-name: admin-service
+        register: true
+        health-check-path: ${management.context-path}/health
+        health-check-interval: 5s
+        health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
