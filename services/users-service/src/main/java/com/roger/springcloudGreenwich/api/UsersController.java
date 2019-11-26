@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
 @RequestMapping("/users-service")
 public class UsersController {
     @Autowired
-    private RedisUtil userServiceRedisUtil;
+    private RedisUtil usersServiceRedisUtil;
     @Autowired
     private KafkaSender kafkaSender;
     @Autowired
@@ -53,7 +53,7 @@ public class UsersController {
         String resultMsg = null;
 
         //query from redis firstly
-        Object redidResult = userServiceRedisUtil.HGet("users", user.getUserNo());
+        Object redidResult = usersServiceRedisUtil.HGet("users", user.getUserNo());
         log.info("query from redis result is:{}", redidResult);
         if(redidResult != null){
             User redisUser = (User)redidResult;
@@ -61,7 +61,7 @@ public class UsersController {
                 log.info("query from redis user is={}",redisUser);
                 resultMsg = Constants.SUCCESS;
                 queryFromRedis = true;
-                userServiceRedisUtil.expandExpiration(user.getUserNo(), 4 * 30);
+                usersServiceRedisUtil.expandExpiration(user.getUserNo(), 4 * 30);
             }
         }
         //query from mysql
@@ -71,7 +71,7 @@ public class UsersController {
                 resultMsg = Constants.FALSE;
             }else{
                 //login success first time
-                userServiceRedisUtil.HSet("users", user.getUserNo(), user, 120L);
+                usersServiceRedisUtil.HSet("users", user.getUserNo(), user, 120L);
                 resultMsg = Constants.SUCCESS;
             }
         }
@@ -80,7 +80,7 @@ public class UsersController {
             String jwt = JwtUtil.getToken(user.getUserNo());
             String token = "Bearer:" +jwt;
             baseResult.setToken(token);
-            userServiceRedisUtil.setObject(token, user, null);
+            usersServiceRedisUtil.setObject(token, user, null);
 
         }
 
@@ -91,7 +91,7 @@ public class UsersController {
 
     @GetMapping(value = "/getSession",produces = "text/html;charset=UTF-8")
     public Object getSession(HttpServletRequest request) throws Exception{
-        ConcurrentMap<String,RedisSession> map = (ConcurrentHashMap)userServiceRedisUtil.getRedisValue("session");
+        ConcurrentMap<String,RedisSession> map = (ConcurrentHashMap)usersServiceRedisUtil.getRedisValue("session");
         RedisSession session = new RedisSession();
 
         log.info("session id is:{}", session.getSessionId());
@@ -132,7 +132,7 @@ public class UsersController {
             log.info("user {} is exist", user.getUserNo());
             return "false";
         }else{
-            Long id = userServiceRedisUtil.generateId("id", 1);
+            Long id = usersServiceRedisUtil.generateId("id", 1);
             user.setId(id);
             user.setUserNo(userNo);
             user.setPassword(MD5Util.md5Encode(user.getPassword()));
