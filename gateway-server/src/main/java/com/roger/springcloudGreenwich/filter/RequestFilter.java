@@ -39,8 +39,7 @@ import java.util.Map;
 public class RequestFilter implements GlobalFilter, Ordered {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-    private RedisUtil gatewayRedisUtil = new RedisUtil(redisTemplate);
+    private RedisUtil gatewayRedisUtil;
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, GatewayFilterChain gatewayFilterChain) {
