@@ -40,7 +40,8 @@ public class GatewayApplication {
         licenceMac = DesEncryptUtils.decrypt(licenceMac);
 
         if(licenceMac == null || !licenceMac.equals(localMac)){
-          return;
+            log.info("mac check false");
+            //return;
         }
         SpringApplication.run(GatewayApplication.class,args);
     }
