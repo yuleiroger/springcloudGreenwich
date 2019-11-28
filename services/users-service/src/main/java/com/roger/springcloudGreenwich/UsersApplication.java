@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Created by admin on 2019/10/21.
@@ -13,6 +14,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @EnableApolloConfig
 @EnableCircuitBreaker//支持熔断
+
 public class UsersApplication {
 
     public static void main(String[] args) {

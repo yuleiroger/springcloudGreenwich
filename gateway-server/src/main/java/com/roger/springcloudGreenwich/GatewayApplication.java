@@ -12,7 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.web.client.RestTemplate;
-
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 /**
@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableApolloConfig
-@Slf4j
+@EnableSwagger2
 public class GatewayApplication {
 
     @Value("${deploy.licence}")
@@ -32,14 +32,6 @@ public class GatewayApplication {
         SpringApplication.run(GatewayApplication.class,args);
     }
 
-    @Bean
-    public void setLicenceValue(){
 
-    }
-
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
 
 }

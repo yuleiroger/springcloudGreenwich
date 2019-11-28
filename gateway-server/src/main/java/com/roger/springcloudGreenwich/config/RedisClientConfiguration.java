@@ -3,6 +3,7 @@ package com.roger.springcloudGreenwich.config;
 import com.roger.springcloudGreenwich.component.CommonPool2Properties;
 import com.roger.springcloudGreenwich.component.SentinelProperties;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -30,6 +31,7 @@ public class RedisClientConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(redisConnectionFactory);

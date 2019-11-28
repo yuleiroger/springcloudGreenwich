@@ -32,9 +32,7 @@ public class SentinelProperties {
         return master;
     }
 
-    public String getNodes() {
-        return nodes;
-    }
+
 
 
     public Set<String> getHosts() {

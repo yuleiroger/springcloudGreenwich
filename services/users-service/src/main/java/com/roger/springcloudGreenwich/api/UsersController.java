@@ -16,6 +16,8 @@ import com.roger.springcloudGreenwich.service.UserService;
 import com.roger.springcloudGreenwich.util.RedisUtil;
 import com.roger.springcloudGreenwich.utils.MD5Util;
 import com.roger.springcloudGreenwich.utils.StringUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jdk.nashorn.internal.parser.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ import java.util.concurrent.Executors;
 @RestController
 @Slf4j
 @RequestMapping("/users-service")
+@Api(tags = "用户相关接口", description = "提供用户相关的 Rest API")
 public class UsersController {
     @Autowired
     private RedisUtil usersServiceRedisUtil;
@@ -46,12 +49,15 @@ public class UsersController {
     private UserService userService;
 
     //@Limit(key = "test", period = 100, count = 2, name="resource", prefix = "limit")
+    @ApiOperation("用户登录接口")
     @PostMapping(value = "/login")
     public String login(HttpServletRequest request, @RequestBody String params) throws Exception{
         log.info("-----------------");
         log.info(params);
+        log.info("方法一获取的IP");
         log.info(getIpAddress(request));
         log.info("-----------------");
+
         Gson gson = new GsonBuilder().create();
         User user = gson.fromJson(params, User.class);
 
@@ -210,38 +216,46 @@ public class UsersController {
         int i = 1/0;
     }
 
-    public static String getIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
-            // 多次反向代理后会有多个ip值，第一个ip才是真实ip
-            if( ip.indexOf(",")!=-1 ){
-                ip = ip.split(",")[0];
-            }
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-            System.out.println("Proxy-Client-IP ip: " + ip);
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-            System.out.println("WL-Proxy-Client-IP ip: " + ip);
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-            System.out.println("HTTP_CLIENT_IP ip: " + ip);
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-            System.out.println("HTTP_X_FORWARDED_FOR ip: " + ip);
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("X-Real-IP");
-            System.out.println("X-Real-IP ip: " + ip);
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-            System.out.println("getRemoteAddr ip: " + ip);
-        }
-        return ip;
+    @GetMapping("/requestIp")
+    public String requestIp(HttpServletRequest request){
+        return getIpAddress(request);
     }
+
+    public static String getIpAddress(HttpServletRequest request) {
+        if (request==null) {
+            return "unknown";
+        }
+        String ip = null;
+
+        // X-Forwarded-For：Squid 服务代理
+        String ipAddresses = request.getHeader("X-Forwarded-For");
+
+        if (ipAddresses==null || ipAddresses.length()==0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            ipAddresses = request.getHeader("Proxy-Client-IP");	// Proxy-Client-IP：apache 服务代理
+        }
+        if (ipAddresses==null || ipAddresses.length()==0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            ipAddresses = request.getHeader("WL-Proxy-Client-IP");	// WL-Proxy-Client-IP：weblogic 服务代理
+        }
+        if (ipAddresses==null || ipAddresses.length()==0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            ipAddresses = request.getHeader("HTTP_CLIENT_IP");	// HTTP_CLIENT_IP：有些代理服务器
+        }
+        if (ipAddresses==null || ipAddresses.length()==0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            ipAddresses = request.getHeader("X-Real-IP");	// X-Real-IP：nginx服务代理
+        }
+
+        // 有些网络通过多层代理，那么获取到的ip就会有多个，一般都是通过逗号（,）分割开来，并且第一个ip为客户端的真实IP
+        if (ipAddresses!=null && ipAddresses.length()!=0) {
+            ip = ipAddresses.split(",")[0];
+        }
+
+        // 还是不能获取到，最后再通过request.getRemoteAddr();获取
+        if (ip==null || ip.length()==0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            ip = request.getRemoteAddr();
+        }
+
+        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
+    }
+
+
+
 }
