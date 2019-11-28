@@ -13,10 +13,10 @@
         <module>services</module>
         <module>redis-service</module>
         <module>common-service</module>
-        <module>entitys</module>
         <module>mongodb-service</module>
         <module>message-queue-server</module>
         <module>admin-server</module>
+        <module>common-entities</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
