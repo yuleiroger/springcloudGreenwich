@@ -107,38 +107,9 @@ public class StringUtil {
 
         Gson gson = new GsonBuilder().create();
         String jsonStr = "{\"userNo\":\"admin\",\"password\":\"xvd\"}";
-        User user = gson.fromJson(jsonStr, User.class);
-        System.out.println(user);
+
     }
 
 }
 
-class User{
-    long id;
-    String userNo;
-    String password;
 
-    public String getUserNo() {
-        return userNo;
-    }
-
-    public void setUserNo(String userNo) {
-        this.userNo = userNo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-}

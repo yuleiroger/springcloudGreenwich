@@ -40,7 +40,7 @@ public class SystemUtil {
     public static void create(){
         File file = new File("d:\\licence.dat") ; // 建立文件
         String password = DesEncryptUtils.encrypt("123456");
-        String mac = DesEncryptUtils.encrypt("24-77-03-C6-07-9C");
+        String mac = DesEncryptUtils.encrypt("00-21-CC-D1-6B-48");
         try{
             Licence tc = new Licence(password, mac) ;
             if (!file.exists()) file.createNewFile() ;
@@ -55,14 +55,21 @@ public class SystemUtil {
         }
     }
 
-    public static String read(){
-        String mac = null;
+    public static Licence read(){
+        String mac;
+        String password;
+        Licence licence = new Licence();
         try{
             FileInputStream fis = new FileInputStream("d:\\licence.dat") ;
             ObjectInputStream ois = new ObjectInputStream(fis) ;
             Licence tc = (Licence) ois.readObject() ;
             mac = tc.getMac();
-            System.out.println(tc.getMac());
+            password = tc.getPassword();
+            //System.out.println(mac);
+            //mac = DesEncryptUtils.decrypt(tc.getMac());
+            //System.out.println(mac);
+            licence.setMac(mac);
+            licence.setPassword(password);
             ois.close();
             fis.close();
         }catch (IOException e){
@@ -70,11 +77,11 @@ public class SystemUtil {
         }catch (ClassNotFoundException e){
             e.printStackTrace();
         }
-        return mac;
+        return licence;
     }
 
     public static void main(String[] args) {
-        //create();
-        read();
+        create();
+        //read();
     }
 }

@@ -17,6 +17,9 @@ public class Licence implements Serializable{
         this.mac = mac;
     }
 
+    public Licence(){
+    }
+
     public String getPassword() {
         return password;
     }
