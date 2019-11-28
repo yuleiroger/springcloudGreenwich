@@ -1,5 +1,8 @@
 package com.roger.springcloudGreenwich.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.roger.springcloudGreenwich.RedisSession;
@@ -43,10 +46,16 @@ public class UsersController {
     private UserService userService;
 
     //@Limit(key = "test", period = 100, count = 2, name="resource", prefix = "limit")
-    @PostMapping(value = "/login",produces = "text/html;charset=UTF-8")
-    public String login(@RequestParam String params) throws Exception{
-        log.info("login params is:{}", params);
-        User user = (User)StringUtil.jsonToObject(params, User.class);
+    @PostMapping(value = "/login")
+    public String login(HttpServletRequest request, @RequestBody String params) throws Exception{
+        log.info("-----------------");
+        log.info(params);
+        log.info(getIpAddress(request));
+        log.info("-----------------");
+        Gson gson = new GsonBuilder().create();
+        User user = gson.fromJson(params, User.class);
+
+        //User user = (User)StringUtil.jsonToObject(params, User.class);
         user.setPassword(MD5Util.md5Encode(user.getPassword()));
 
         boolean queryFromRedis = false;
@@ -201,5 +210,38 @@ public class UsersController {
         int i = 1/0;
     }
 
-
+    public static String getIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
+            // 多次反向代理后会有多个ip值，第一个ip才是真实ip
+            if( ip.indexOf(",")!=-1 ){
+                ip = ip.split(",")[0];
+            }
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+            System.out.println("Proxy-Client-IP ip: " + ip);
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+            System.out.println("WL-Proxy-Client-IP ip: " + ip);
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+            System.out.println("HTTP_CLIENT_IP ip: " + ip);
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+            System.out.println("HTTP_X_FORWARDED_FOR ip: " + ip);
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Real-IP");
+            System.out.println("X-Real-IP ip: " + ip);
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+            System.out.println("getRemoteAddr ip: " + ip);
+        }
+        return ip;
+    }
 }

@@ -1,6 +1,7 @@
 package com.roger.springcloudGreenwich.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 import java.util.Random;
@@ -103,6 +104,41 @@ public class StringUtil {
 
         //判断fourAddress是否是IP
         System.out.println(isIP(fourAddress));
+
+        Gson gson = new GsonBuilder().create();
+        String jsonStr = "{\"userNo\":\"admin\",\"password\":\"xvd\"}";
+        User user = gson.fromJson(jsonStr, User.class);
+        System.out.println(user);
     }
 
+}
+
+class User{
+    long id;
+    String userNo;
+    String password;
+
+    public String getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

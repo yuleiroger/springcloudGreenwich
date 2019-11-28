@@ -71,6 +71,7 @@ public class RedisClientConfiguration {
         poolConfig.setMaxIdle(commonPool2Properties.getMaxIdle());
         poolConfig.setMinIdle(commonPool2Properties.getMinIdle());
         poolConfig.setMaxTotal(commonPool2Properties.getMaxTotal());
+
         //todo 其他配置
         return poolConfig;
     }
