@@ -10,11 +10,12 @@ public class Licence implements Serializable{
 
     private String password;
     private String mac;
-    private String expireDate;
+
 
     public Licence(String password, String mac){
         this.password = password;
         this.mac = mac;
+
     }
 
     public Licence(){
@@ -35,4 +36,5 @@ public class Licence implements Serializable{
     public void setMac(String mac) {
         this.mac = mac;
     }
+
 }
