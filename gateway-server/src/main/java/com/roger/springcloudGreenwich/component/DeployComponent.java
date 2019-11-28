@@ -23,7 +23,7 @@ public class DeployComponent {
     @Bean
     public boolean validateLicence() throws Exception{
         log.info("licence:{}", licence);
-        boolean result = false;
+        boolean result;
         if (licence){
             Licence licence = SystemUtil.read();
             String localMac = NetworkUtil.getMACAddress();
