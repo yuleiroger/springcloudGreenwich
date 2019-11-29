@@ -128,7 +128,7 @@ public class DesEncryptUtils {
 
 
     public static void main(String[] args) {
-        String plaintext = "yulei";
+        String plaintext = "root";
 
         System.out.println("加密前:" + plaintext);
 
@@ -138,15 +138,15 @@ public class DesEncryptUtils {
         String decryptedText = DesEncryptUtils.decrypt(ciphertext);
         System.out.println("解密后:" + decryptedText);
 
-        plaintext = "123456";
-
-        System.out.println("加密前:" + plaintext);
-
-        ciphertext = DesEncryptUtils.encrypt(plaintext);
-        System.out.println("加密后:" + ciphertext);
-
-        decryptedText = DesEncryptUtils.decrypt(ciphertext);
-        System.out.println("解密后:" + decryptedText);
+//        plaintext = "123456";
+//
+//        System.out.println("加密前:" + plaintext);
+//
+//        ciphertext = DesEncryptUtils.encrypt(plaintext);
+//        System.out.println("加密后:" + ciphertext);
+//
+//        decryptedText = DesEncryptUtils.decrypt(ciphertext);
+//        System.out.println("解密后:" + decryptedText);
 
     }
 }
