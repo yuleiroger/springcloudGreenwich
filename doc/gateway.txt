@@ -4,5 +4,7 @@ consul:
 https://www.jianshu.com/p/d8f273dda86c
 https://blog.51cto.com/aaronsa/2064886
 https://www.cnblogs.com/duanxz/p/10564502.html
+https://blog.csdn.net/YellowStar5/article/details/91346695
+https://segmentfault.com/a/1190000016677665?utm_source=tag-newest
 
 ./consul join 192.168.100.129

@@ -17,6 +17,7 @@
         <module>message-queue-server</module>
         <module>admin-server</module>
         <module>common-entities</module>
+        <module>gateway-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

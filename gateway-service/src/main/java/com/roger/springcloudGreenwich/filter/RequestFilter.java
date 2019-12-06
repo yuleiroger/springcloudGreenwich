@@ -2,24 +2,18 @@ package com.roger.springcloudGreenwich.filter;
 
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-
 import org.springframework.core.io.buffer.DataBuffer;
-
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 
 
 /**
@@ -28,9 +22,6 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class RequestFilter implements GlobalFilter, Ordered {
-
-
-
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, GatewayFilterChain gatewayFilterChain) {
 
