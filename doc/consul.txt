@@ -1,0 +1,50 @@
+CONSUL集群安装
+server端server.json
+{
+ "datacenter": "dc",
+  "ports": {
+    "http": 8500
+    },
+ "bind_addr": "192.168.100.129",
+ "client_addr":"0.0.0.0",
+ "bootstrap_expect": 3,
+ "node_name": "zkserver",
+ "domain": "consul",
+ "log_rotate_bytes": 10485760,
+ "log_file": "/opt/consul/log/",
+ "server": true,
+ "data_dir": "/opt/consul/consul_data/",
+ "log_level": "INFO",
+ "skip_leave_on_interrupt": true,
+ "enable_debug": false,
+ "leave_on_terminate": true,
+ "enable_syslog": true
+}
+./consul agent -server -ui -config-dir=/opt/consul &
+
+client端client.json
+{
+ "datacenter": "dc",
+  "ports": {
+    "http": 8500
+    },
+ "bind_addr": "192.168.100.131",
+ "bootstrap_expect": 3,
+ "node_name": "web",
+ "domain": "consul",
+ "data_dir": "/opt/consul/consul_data/",
+ "log_level": "INFO",
+ "log_rotate_bytes": 10485760,
+ "log_file": "/opt/consul/log/",
+ "skip_leave_on_interrupt": true,
+ "enable_debug": false,
+ "skip_leave_on_interrupt": true,
+ "enable_debug": false,
+ "leave_on_terminate": true,
+ "enable_syslog": true,
+ "retry_join": ["192.168.100.129"],
+ "retry_interval": "3s",
+ "raft_protocol": 3
+}
+
+./consul agent -server -ui -config-dir=/opt/consul &
