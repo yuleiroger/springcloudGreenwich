@@ -1,0 +1,4 @@
+LINUX下新建用户
+useradd es
+修改密码
+passwd yuleiroger
