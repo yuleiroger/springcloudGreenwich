@@ -17,6 +17,8 @@
         <module>orders-service</module>
         <module>log-service</module>
         <module>elasticsearch-service</module>
+        <module>zipkinclient1-service</module>
+        <module>zipkinprovider-service</module>
     </modules>
 
 
