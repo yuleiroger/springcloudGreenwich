@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ProviderController {
+
     @RequestMapping(value="/index",method= {RequestMethod.GET})
     public String index() {
         return "hello world";

@@ -14,8 +14,4 @@ public class ZipkinProviderApplication {
         SpringApplication.run(ZipkinProviderApplication.class, args);
     }
 
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
 }
