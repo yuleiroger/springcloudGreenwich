@@ -18,4 +18,5 @@ public class ZipkinClient1Application {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
+
 }
