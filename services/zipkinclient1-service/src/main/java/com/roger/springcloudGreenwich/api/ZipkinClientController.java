@@ -13,10 +13,6 @@ import org.springframework.web.client.RestTemplate;
 public class ZipkinClientController {
     private String url = "http://localhost:8081/index";
 
-    @GetMapping(value = "index")
-    public String index(){
-        return "index";
-    }
 
     @Autowired
     private RestTemplate restTemplate;
